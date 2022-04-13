@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils;
 
 public class MovementController : MonoBehaviour
 {
+    public Orientation orientation { private set; get; }
+    
     // Start is called before the first frame update
     private Vector2? destination = null;
     private Rigidbody2D body;
@@ -29,13 +32,15 @@ public class MovementController : MonoBehaviour
         if (destination is not null) {
             var (cx, cy) = body.position;
             var (dx, dy) = destination;
-            var (nx, ny) = (cx, dx) switch {
-                var (_, _) when cx < dx => (Math.Min(cx + delta, dx), cy),
-                var (_, _) when cx > dx => (Math.Max(cx - delta, dx), cy),
-                var (_, _) when cy < dy => (cx, Math.Min(cy + delta, dy)),
-                var (_, _) when cy > dy => (cx, Math.Max(cy - delta, dy)),
-                var (_, _) => (cx, cy)
+            var (nx, ny, orient) = (cx, dx) switch {
+                var (_, _) when cx < dx => (Math.Min(cx + delta, dx), cy, Orientation.Right),
+                var (_, _) when cx > dx => (Math.Max(cx - delta, dx), cy, Orientation.Left),
+                var (_, _) when cy < dy => (cx, Math.Min(cy + delta, dy), Orientation.Up),
+                var (_, _) when cy > dy => (cx, Math.Max(cy - delta, dy), Orientation.Down),
+                var (_, _) => (cx, cy, this.orientation)
             };
+
+            orientation = orient;
             
             if (!Mathf.Approximately(nx, dx) || !Mathf.Approximately(ny, dy)) {
                 body.position = new Vector2(nx, ny);
