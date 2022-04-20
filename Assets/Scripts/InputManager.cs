@@ -4,10 +4,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour {
-    private MovementController player;
+    private GameObject player;
+
+    private Rigidbody2D pb;
+
+    private MovementController mc;
     // Start is called before the first frame update
     void Start() {
-        player = GameObject.FindWithTag("Player").GetComponent<MovementController>();
+        player = GameObject.FindWithTag("Player");
+        pb = player.GetComponent<Rigidbody2D>();
+        mc = player.GetComponent<MovementController>();
     }
 
     // Update is called once per frame
@@ -17,6 +23,10 @@ public class InputManager : MonoBehaviour {
     }
 
     public void Move(InputAction.CallbackContext context) {
-        player.Move(context.ReadValue<Vector2>());
+        mc.Move(context.ReadValue<Vector2>());
+    }
+
+    public void Confirm(InputAction.CallbackContext context) {
+        //pb.Cast();
     }
 }
