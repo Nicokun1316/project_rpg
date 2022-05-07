@@ -15,36 +15,42 @@ public class MovementController : MonoBehaviour
     private Vector2? destination = null;
     private Rigidbody2D body;
     private Vector2 inputVector;
+    private Vector2 virtualPosition;
 
     [SerializeField] private float speed = 1;
     [SerializeField] private List<Tilemap> obstacleMaps;
     
     void Start() {
         body = GetComponent<Rigidbody2D>();
+        virtualPosition = body.position;
+        orientation = Orientation.Up;
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
+        if (GameManager.INSTANCE.currentGameState != GameState.WORLD) {
+            return;
+        }
         updateDestination();
         
-        var delta = speed * Time.deltaTime;
+        var delta = speed * Time.fixedDeltaTime;
         
         if (destination is not null) {
-            var (cx, cy) = body.position;
-            var (dx, dy) = destination;
-            var (nx, ny, orient) = (cx, dx) switch {
-                var (_, _) when cx < dx => (Math.Min(cx + delta, dx), cy, Orientation.Right),
-                var (_, _) when cx > dx => (Math.Max(cx - delta, dx), cy, Orientation.Left),
-                var (_, _) when cy < dy => (cx, Math.Min(cy + delta, dy), Orientation.Up),
-                var (_, _) when cy > dy => (cx, Math.Max(cy - delta, dy), Orientation.Down),
-                var (_, _) => (cx, cy, this.orientation)
+            var (cx, cy) = virtualPosition;
+            var (dx, dy) = destination.Value;
+            var (nx, ny) = (cx, dx) switch {
+                var (_, _) when cx < dx => (Math.Min(cx + delta, dx), cy),
+                var (_, _) when cx > dx => (Math.Max(cx - delta, dx), cy),
+                var (_, _) when cy < dy => (cx, Math.Min(cy + delta, dy)),
+                var (_, _) when cy > dy => (cx, Math.Max(cy - delta, dy)),
+                var (_, _) => (cx, cy)
             };
-
-            orientation = orient;
             
-            if (!Mathf.Approximately(nx, dx) || !Mathf.Approximately(ny, dy)) {
-                body.position = new Vector2(nx, ny);
-            } else {
+            virtualPosition = new Vector2(nx, ny);
+            body.position = GameManager.PixelClamp(virtualPosition);
+
+            
+            if (Mathf.Approximately(nx, dx) && Mathf.Approximately(ny, dy)) {
                 destination = null;
             }
         }
@@ -52,8 +58,15 @@ public class MovementController : MonoBehaviour
 
     private void updateDestination() {
         if (destination is null && inputVector != Vector2.zero) {
+            orientation = inputVector switch {
+                (0, 1) => Orientation.Up,
+                (0, -1) => Orientation.Down,
+                (1, 0) => Orientation.Right,
+                (-1, 0) => Orientation.Left,
+                _ => orientation
+            };
             var (x, y) = inputVector;
-            var (cx, cy) = body.position;
+            var (cx, cy) = virtualPosition;
             Vector2? dest = null;
             if (x != 0) {
                 dest = x > 0 ? new Vector2(cx + 1, cy) : new Vector2(cx - 1, cy);
@@ -72,6 +85,12 @@ public class MovementController : MonoBehaviour
     }
 
     public void Move(Vector2 moveVec) {
-        inputVector = moveVec;
+        if (moveVec == Vector2.zero) {
+            inputVector = moveVec;
+        } else if (Math.Abs(moveVec.x) > Math.Abs(moveVec.y)) {
+            inputVector = new Vector2(moveVec.x > 0 ? 1 : -1, 0);
+        } else {
+            inputVector = new Vector2(0, moveVec.y > 0 ? 1 : -1);
+        }
     }
 }
