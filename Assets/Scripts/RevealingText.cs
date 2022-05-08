@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace DefaultNamespace {
     public class RevealingText {
-        private readonly String text;
+        public readonly String completeText;
         public Observable<String> currentText;
         public bool revealed { get; private set; }
 
-        public RevealingText(String text) {
-            this.text = text;
+        public RevealingText(String completeText) {
+            this.completeText = completeText;
             revealed = false;
             currentText = "";
         }
@@ -17,10 +17,10 @@ namespace DefaultNamespace {
         public IEnumerator RevealText() {
             revealed = false;
             Debug.Log("Beginning the begin");
-            foreach (var character in text) {
+            foreach (var character in completeText) {
                 Debug.Log($"Adding character `{character}`");
                 currentText.set(currentText.get() + character);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.05f);
             }
 
             revealed = true;
@@ -28,7 +28,7 @@ namespace DefaultNamespace {
 
         public void RevealAll() {
             revealed = true;
-            currentText.set(text);
+            currentText.set(completeText);
         }
     }
 }

@@ -7,10 +7,9 @@ using UnityEngine;
 using Utils;
 
 public class UIManager : MonoBehaviour {
-    [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private DialogueText dialogueText;
     public static UIManager INSTANCE { get; private set; }
     private Dialogue currentDialogue = null;
-    private RevealingText currentDialogueText = null;
 
     private void Awake() {
         INSTANCE ??= this;
@@ -33,7 +32,7 @@ public class UIManager : MonoBehaviour {
                     GameManager.INSTANCE.TransitionGameState(GameState.WORLD);
                     dialogueText.gameObject.parent().SetActive(false);
                 } else {
-                    dialogueText.text = current.Value.text;
+                    dialogueText.textValue = current.Value.text;
                 }
                 break;
         }
@@ -46,13 +45,8 @@ public class UIManager : MonoBehaviour {
             currentDialogue.startDialogue();
             GameManager.INSTANCE.TransitionGameState(GameState.UI);
             dialogueText.gameObject.parent().SetActive(true);
-            currentDialogueText = new RevealingText(currentDialogue.current()?.text);
-            currentDialogueText.currentText.onChange += (oldValue, newValue) => {
-                Debug.Log(newValue);
-                dialogueText.text = newValue;
-            };
-            StartCoroutine(currentDialogueText.RevealText());
-            // dialogueText.text = currentDialogue.current()?.text;
+            
+            dialogueText.textValue = currentDialogue.current()?.text;
         }
     }
 }

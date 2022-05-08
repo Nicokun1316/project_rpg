@@ -38,6 +38,9 @@ public class InputManager : MonoBehaviour {
     }
 
     public void Confirm(InputAction.CallbackContext context) {
+        if (!context.performed) {
+            return;
+        }
         var currentState = GameManager.INSTANCE.currentGameState;
         switch (currentState) {
             case GameState.UI:
