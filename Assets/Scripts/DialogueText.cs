@@ -9,6 +9,8 @@ namespace DefaultNamespace {
         private IEnumerator runningText = null;
 
         private readonly Observable<String>.ValueChange updateText;
+        
+        public bool revealed => rText.revealed;
 
         public DialogueText() {
             updateText = (_, newValue) => {
@@ -30,6 +32,15 @@ namespace DefaultNamespace {
                 rText.currentText.onChange += updateText;
                 runningText = rText.RevealText();
                 StartCoroutine(runningText);
+            }
+        }
+
+        public void RevealAll() {
+            if (runningText != null) {
+                StopCoroutine(runningText);
+                rText.RevealAll();
+                runningText = null;
+                rText.currentText.onChange -= updateText;
             }
         }
 
