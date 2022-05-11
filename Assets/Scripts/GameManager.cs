@@ -5,7 +5,7 @@ using System.Linq;
 using DefaultNamespace;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : Singleton {
     private MovementController playerController;
     private GameObject player;
     private Rigidbody2D playerBody;
@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour {
         currentGameState = GameState.WORLD;
         findFilter.useLayerMask = true;
     }
-    public static GameManager INSTANCE { get; private set; }
+
+    public static GameManager INSTANCE;
 
     public static int PPU = 32;
 
@@ -28,19 +29,30 @@ public class GameManager : MonoBehaviour {
         return vectorInPixels / PPU;
     }
 
-    private void Initialise() {
+    /*private void Initialise() {
+        player = GameObject.FindWithTag("Player");
+        playerController = player.GetComponent<MovementController>();
+        playerBody = player.GetComponent<Rigidbody2D>();
+    }*/
+
+    protected override void Initialize() {
         player = GameObject.FindWithTag("Player");
         playerController = player.GetComponent<MovementController>();
         playerBody = player.GetComponent<Rigidbody2D>();
     }
 
+    protected override Singleton instance {
+        get => INSTANCE;
+        set => INSTANCE = (GameManager) value;
+    }
+
     public GameState currentGameState { get; private set; }
-    // Start is called before the first frame update
+    /*// Start is called before the first frame update
     private void Awake() {
         INSTANCE ??= this;
         INSTANCE.Initialise();
         DontDestroyOnLoad(INSTANCE);
-    }
+    }*/
 
     private void Update() {
         if (pp != null && pv != null) {
