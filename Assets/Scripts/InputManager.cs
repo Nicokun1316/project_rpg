@@ -53,4 +53,21 @@ public class InputManager : MonoBehaviour {
                 break;
         }
     }
+
+    public void Cancel(InputAction.CallbackContext context) {
+        if (!context.performed) {
+            return;
+        }
+
+        switch (GameManager.INSTANCE.currentGameState) {
+            case GameState.UI:
+                UIManager.INSTANCE.Cancel();
+                break;
+            case GameState.WORLD:
+                UIManager.INSTANCE.Cancel();
+                break;
+            case GameState.COMBAT: 
+                break;
+        }
+    }
 }
