@@ -16,9 +16,7 @@ namespace DefaultNamespace {
 
         public IEnumerator RevealText() {
             revealed = false;
-            Debug.Log("Beginning the begin");
             foreach (var character in completeText) {
-                Debug.Log($"Adding character `{character}`");
                 currentText.set(currentText.get() + character);
                 yield return new WaitForSeconds(0.05f);
             }
