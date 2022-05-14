@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DefaultNamespace {
+namespace UI {
     [Serializable]
     public class TextSequence {
         public List<String> lines;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
+using DefaultNamespace;
 using TMPro;
-using Unity.VisualScripting;
 
-namespace DefaultNamespace {
+namespace UI {
     public class DialogueText: TextMeshProUGUI {
         private RevealingText rText = null;
         private IEnumerator runningText = null;
@@ -35,12 +35,18 @@ namespace DefaultNamespace {
             }
         }
 
-        public void RevealAll() {
+        public void Continue() {
             if (runningText != null) {
-                StopCoroutine(runningText);
+                var finished = rText.Continue();
+                if (finished) {
+                    StopCoroutine(runningText);
+                    runningText = null;
+                    rText.currentText.onChange -= updateText;
+                }
+                /*StopCoroutine(runningText);
                 rText.RevealAll();
                 runningText = null;
-                rText.currentText.onChange -= updateText;
+                rText.currentText.onChange -= updateText;*/
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace {
+namespace UI {
     public class StatefulDialogue : MonoBehaviour, Dialogue {
         [SerializeField] private List<TextSequence> dialogues;
         private int dialogueIndex = -1;

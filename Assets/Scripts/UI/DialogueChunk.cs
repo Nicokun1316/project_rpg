@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DefaultNamespace {
+namespace UI {
     public struct DialogueChunk {
         public DialogueChunk(String author, String text, List<String> options = null) {
             this.author = author;

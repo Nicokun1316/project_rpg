@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace {
+namespace UI {
     public class MultilineDialogue : MonoBehaviour, Dialogue {
         [SerializeField] private List<String> dialogues;
         private int currentIndex = 0;

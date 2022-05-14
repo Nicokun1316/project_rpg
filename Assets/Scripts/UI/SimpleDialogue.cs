@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DefaultNamespace {
+namespace UI {
     public class SimpleDialogue : MonoBehaviour, Dialogue {
         [SerializeField] private String text;
         private DialogueChunk? currentChunk = null;

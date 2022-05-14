@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
+using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,11 +26,24 @@ public class InputManager : MonoBehaviour {
 
     public void Move(InputAction.CallbackContext context) {
         var mv = context.ReadValue<Vector2>();
+        Vector2 resultVector;
+        if (mv == Vector2.zero) {
+            resultVector = mv;
+        } else if (Math.Abs(mv.x) > Math.Abs(mv.y)) {
+            resultVector = new Vector2(mv.x > 0 ? 1 : -1, 0);
+        } else {
+            resultVector = new Vector2(0, mv.y > 0 ? 1 : -1);
+        }
+        
         switch (GameManager.INSTANCE.currentGameState) {
             case GameState.UI:
+                if (context.performed) {
+                    UIManager.INSTANCE.MoveUI(resultVector);
+                }
+
                 break;
             case GameState.WORLD:
-                playerController.Move(mv);
+                playerController.Move(resultVector);
                 break;
             case GameState.COMBAT:
                 break;

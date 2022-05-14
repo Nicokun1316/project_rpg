@@ -1,6 +1,7 @@
 ﻿using System;
+using DefaultNamespace;
 
-namespace DefaultNamespace {
+namespace UI {
     public interface Dialogue {
         public void startDialogue();
         public DialogueChunk? current();

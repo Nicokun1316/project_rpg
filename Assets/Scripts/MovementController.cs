@@ -85,12 +85,6 @@ public class MovementController : MonoBehaviour
     }
 
     public void Move(Vector2 moveVec) {
-        if (moveVec == Vector2.zero) {
-            inputVector = moveVec;
-        } else if (Math.Abs(moveVec.x) > Math.Abs(moveVec.y)) {
-            inputVector = new Vector2(moveVec.x > 0 ? 1 : -1, 0);
-        } else {
-            inputVector = new Vector2(0, moveVec.y > 0 ? 1 : -1);
-        }
+        inputVector = moveVec;
     }
 }
