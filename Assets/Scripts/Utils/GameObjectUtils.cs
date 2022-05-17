@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Utils {
@@ -20,6 +21,18 @@ namespace Utils {
             }
 
             return null;
+        }
+
+        public static List<T> GetComponentsInDirectChildren<T>(this Transform obj) {
+            var components = new List<T>();
+            foreach (Transform trans in obj) {
+                var c = trans.GetComponent<T>();
+                if (c != null) {
+                    components.Add(c);
+                }
+            }
+
+            return components;
         }
     }
 }

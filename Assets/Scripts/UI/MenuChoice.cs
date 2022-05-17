@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utils;
 using MathUtils = Utils.MathUtils;
 
 namespace UI {
@@ -11,28 +12,25 @@ namespace UI {
         private int index;
     
         void OnEnable() {
-            children = transform.GetComponentsInChildren<UIMenuItem>(true).ToList();
-            currentSelection.arrow.SetActive(true);
+            children = transform.GetComponentsInDirectChildren<UIMenuItem>();
+            currentSelection.select();
         }
 
         public UIMenuItem currentSelection => children[index];
+        public UIMenuItem[] items => children.ToArray();
 
         public void Next() {
-            currentSelection.arrow.SetActive(false);
-            index = MathUtils.mod(index + 1, children.Count);
-            currentSelection.arrow.SetActive(true);
+            SetIndex(index + 1);
         }
 
         public void Previous() {
-            currentSelection.arrow.SetActive(false);
-            index = MathUtils.mod(index - 1, children.Count);
-            currentSelection.arrow.SetActive(true);
+            SetIndex(index - 1);
         }
 
         public void SetIndex(int i) {
-            currentSelection.arrow.SetActive(false);
-            index = Math.Clamp(i, 0, children.Count - 1);
-            currentSelection.arrow.SetActive(true);
+            currentSelection.deselect();
+            index = MathUtils.mod(i, children.Count);
+            currentSelection.select();
         }
 
         public void StopAnimation() {

@@ -3,45 +3,55 @@ using Utils;
 
 namespace UI {
     public class MenuChoiceComponent : MonoBehaviour, Focusable {
-        private MenuChoice choice;
+        protected MenuChoice choice;
+        [SerializeField] private bool isHorizontal = true;
 
         private void OnEnable() {
             choice = GetComponent<MenuChoice>();
         }
 
-        public ConfirmResult MoveInput(Vector2 direction) {
+        public virtual ConfirmResult MoveInput(Vector2 direction) {
+            if (!isHorizontal) {
+                var (x, y) = direction;
+                direction = new(-y, -x);
+            }
+
             if (direction == Vector2.right) {
                 choice.Next();
             } else if (direction == Vector2.left) {
                 choice.Previous();
+            } else if (direction == Vector2.down) {
+                choice.currentSelection.GetComponent<Focusable>().MoveInput(Vector2.right);
+            } else if (direction == Vector2.up) {
+                choice.currentSelection.GetComponent<Focusable>().MoveInput(Vector2.left);
             }
 
             return ConfirmResult.DoNothing;
         }
 
-        public ConfirmResult Confirm() {
+        public virtual ConfirmResult Confirm() {
             return ConfirmResult.ChangeFocus(choice.currentSelection.GetComponent<Focusable>());
         }
 
-        public ConfirmResult Cancel() {
+        public virtual ConfirmResult Cancel() {
             return ConfirmResult.Return;
         }
 
-        public ConfirmResult Focus() {
+        public virtual ConfirmResult Focus() {
             gameObject.parent().SetActive(true);
             choice.SetIndex(0);
             return ConfirmResult.DoNothing;
         }
 
-        public void Unfocus() {
+        public virtual void Unfocus() {
             choice.gameObject.parent().SetActive(false);
         }
 
-        public void Freeze() {
+        public virtual void Freeze() {
             choice.StopAnimation();
         }
 
-        public void Unfreeze() {
+        public virtual void Unfreeze() {
             choice.ResumeAnimation();
         }
     }

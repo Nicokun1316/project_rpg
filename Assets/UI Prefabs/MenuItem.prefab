@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31e48327d1e73142a431d12bab93b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasArrow: 1
 --- !u!114 &9175808952999057481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcdc115a353434f44b4bd90cf7927a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTab: {fileID: 0}
 --- !u!1 &162654680497387556
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,8 +115,9 @@ GameObject:
   m_Component:
   - component: {fileID: 162654680497387557}
   - component: {fileID: 162654680497387555}
-  - component: {fileID: 162654680497387554}
+  - component: {fileID: 230328994571137612}
   - component: {fileID: 162654680497387552}
+  - component: {fileID: 1367653194353585827}
   m_Layer: 5
   m_Name: Arrow
   m_TagString: Untagged
@@ -139,8 +142,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -10, y: 0}
-  m_SizeDelta: {x: 8, y: 8}
+  m_AnchoredPosition: {x: -12, y: 0}
+  m_SizeDelta: {x: 9, y: 9}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &162654680497387555
 CanvasRenderer:
@@ -150,7 +153,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162654680497387556}
   m_CullTransparentMesh: 1
---- !u!114 &162654680497387554
+--- !u!114 &230328994571137612
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,24 +162,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 162654680497387556}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.8352941, b: 0.25490198, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 7694251811ec9a942bbe6e61c294f619, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+  m_Sprite: {fileID: 21300000, guid: 1015de4d3e231db42bb2a1e37984b86b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &162654680497387552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +195,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff891cbac2b0b94d9060b403299b65a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1367653194353585827
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162654680497387556}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c745553822da627498034a43369cb805, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &162654680617032087
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +253,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 42.01, y: 48}
+  m_SizeDelta: {x: 0, y: 48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &162654680617032083
 CanvasRenderer:
