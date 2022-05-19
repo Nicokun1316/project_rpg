@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Items;
+using UnityEngine;
 using Utils;
 
 namespace UI {
     public class MenuChoiceComponent : MonoBehaviour, Focusable {
-        protected MenuChoice choice;
+        public MenuChoice choice { get; private set; }
         [SerializeField] private bool isHorizontal = true;
 
         private void OnEnable() {
@@ -39,12 +40,12 @@ namespace UI {
 
         public virtual ConfirmResult Focus() {
             gameObject.parent().SetActive(true);
-            choice.SetIndex(0);
+            choice.index = 0;
             return ConfirmResult.DoNothing;
         }
 
         public virtual void Unfocus() {
-            choice.gameObject.parent().SetActive(false);
+            ((MonoBehaviour) choice).gameObject.parent().SetActive(false);
         }
 
         public virtual void Freeze() {

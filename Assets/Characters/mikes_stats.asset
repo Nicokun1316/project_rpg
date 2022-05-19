@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a49c5213e24e7c9be99cac103b2c45, type: 3}
+  m_Name: mikes_stats
+  m_EditorClassIdentifier: 
+  statProgression:
+  - health: 10
+    magic: 5
+    speed: 4
+    attack: 6
+    defense: 4
+    luck: 1
+    requiredXP: 0
+  - health: 14
+    magic: 8
+    speed: 5
+    attack: 9
+    defense: 5
+    luck: 1
+    requiredXP: 10
+  - health: 16
+    magic: 12
+    speed: 5
+    attack: 11
+    defense: 6
+    luck: 2
+    requiredXP: 30
+  - health: 20
+    magic: 18
+    speed: 6
+    attack: 14
+    defense: 8
+    luck: 2
+    requiredXP: 60
+  - health: 28
+    magic: 22
+    speed: 7
+    attack: 16
+    defense: 8
+    luck: 3
+    requiredXP: 200
+  - health: 30
+    magic: 28
+    speed: 9
+    attack: 20
+    defense: 8
+    luck: 3
+    requiredXP: 400

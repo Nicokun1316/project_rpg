@@ -7,6 +7,7 @@ TagManager:
   - InteractiveText
   - DialogueText
   - Menu
+  - ItemMenu
   layers:
   - Default
   - TransparentFX

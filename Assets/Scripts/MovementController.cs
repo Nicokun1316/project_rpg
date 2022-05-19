@@ -75,7 +75,7 @@ public class MovementController : MonoBehaviour
             }
 
             if (dest is not null) {
-                var d = Vector3Int.FloorToInt(dest ?? default(Vector2));
+                var d = Vector3Int.FloorToInt((Vector3) dest);
                 var isObstructed = obstacleMaps.Any(m => m.HasTile(d));
                 if (!isObstructed) {
                     destination = dest;

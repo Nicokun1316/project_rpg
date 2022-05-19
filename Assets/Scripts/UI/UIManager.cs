@@ -7,11 +7,11 @@ namespace UI {
     public class UIManager : Singleton {
         //private Image menu;
         public static UIManager INSTANCE { get; private set; }
-        private MenuChoice choice;
+        private StaticChoice choice;
         private Stack<Focusable> focusStack = new();
 
         protected override void Initialize() {
-            choice = FindObjectsOfType<MenuChoice>(true).First(it => it.gameObject.CompareTag("Menu"));
+            choice = FindObjectsOfType<StaticChoice>(true).First(it => it.gameObject.CompareTag("Menu"));
             //choice = menu.transform.GetComponentInChildren<MenuChoice>(true);
         }
 
