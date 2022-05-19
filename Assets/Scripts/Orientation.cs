@@ -1,5 +1,3 @@
-﻿namespace DefaultNamespace {
-    public enum Orientation {
-        Up, Down, Left, Right
-    }
+﻿public enum Orientation {
+    Up, Down, Left, Right
 }

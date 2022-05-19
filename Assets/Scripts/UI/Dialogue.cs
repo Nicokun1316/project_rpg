@@ -1,5 +1,4 @@
 ﻿using System;
-using DefaultNamespace;
 
 namespace UI {
     public interface Dialogue {

@@ -1,5 +1,3 @@
-﻿namespace DefaultNamespace {
-    public enum GameState {
-        WORLD, UI, COMBAT
-    }
+﻿public enum GameState {
+    WORLD, UI, COMBAT
 }

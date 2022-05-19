@@ -1,6 +1,4 @@
-﻿using UI;
-
-namespace Items {
+﻿namespace UI {
     public interface MenuChoice {
         public UIMenuItem currentSelection => items[index];
         public UIMenuItem[] items { get; }

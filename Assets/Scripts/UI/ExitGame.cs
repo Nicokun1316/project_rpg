@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UI;
 using UnityEngine;
 
-public class ExitGame : MonoBehaviour, ActionButton
-{
+namespace UI {
+    public class ExitGame : MonoBehaviour, ActionButton
+    {
     
 
-    public void PerformAction() {
-        #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        #endif
-        Application.Quit();
+        public void PerformAction() {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
+        }
     }
 }

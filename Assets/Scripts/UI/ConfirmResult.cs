@@ -1,6 +1,4 @@
-﻿using DefaultNamespace;
-
-namespace UI {
+﻿namespace UI {
     public struct ConfirmResult {
         public static readonly ConfirmResult DoNothing = new(ConfirmResultType.DoNothing);
         public static readonly ConfirmResult Return = new(ConfirmResultType.Return);

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UI;
+using Items;
 using UnityEngine;
 using Utils;
 
-namespace Items {
+namespace UI {
     public class ItemChoiceList : MonoBehaviour, MenuChoice {
         public UIMenuItem[] items => children.Take(_cItems.Count).ToArray();
         private List<UIMenuItem> children;
