@@ -27,7 +27,7 @@ namespace UI {
                         $"{it.name}: {(it.value > 0 ? $"<color=green>+{it.value}</color>" : $"<color=red>{it.value}</color>")}")
                     .Aggregate((total, nextStat) => $"{total}\n{nextStat}");
                 stats.text = statString;
-            } catch (InvalidOperationException e) {
+            } catch (InvalidOperationException) {
                 stats.text = "";
             }
         }

@@ -24,6 +24,7 @@ namespace UI {
         private void Start() {
             image = transform.Find("Image").GetComponent<Image>();
             text = transform.Find("Text").GetComponent<TMP_Text>();
+            money = transform.Find("Money").GetComponent<TMP_Text>();
             InvalidateItem();
         }
     
@@ -33,6 +34,7 @@ namespace UI {
             if (_item != null && _item.icon != null && image != null) {
                 image.sprite = Sprite.Create(_item.icon, new Rect(0, 0, _item.icon.width, _item.icon.height), Vector2.zero);
                 text.text = _item.itemName;
+                money.text = $"${_item.cost}";
             }
         }
     }

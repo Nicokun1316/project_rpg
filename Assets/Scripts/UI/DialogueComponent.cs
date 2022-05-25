@@ -102,8 +102,9 @@ namespace UI {
                         item.text = option;
                     }
 
-                    choices.index = 0;
+                    choices.Reset();
                     answerPanel.SetActive(true);
+                    choices.index = 0;
                 }
                 return ConfirmResult.DoNothing;
             }

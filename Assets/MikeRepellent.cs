@@ -7,6 +7,7 @@ using Kyara;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
 
 public class MikeRepellent : MonoBehaviour/*, Dialogue*/ {
     private Focusable focusable;
@@ -45,7 +46,7 @@ public class MikeRepellent : MonoBehaviour/*, Dialogue*/ {
         yield return UIManager.INSTANCE.PerformDialogue(ChooseDialogue(), v => options = v);
 
         if (mikeChara.inventory.items.Contains(courage)) {
-            if (options["mike_drink"] == "Yes") {
+            if (options.GetOrDefault("mike_drink", "No") == "Yes") {
                 yield return mike.MoveAsync(Vector2.up);
                 mikeChara.inventory.items.Remove(courage);
                 mikeChara.character.addExperience(10);
