@@ -24,8 +24,6 @@ namespace UI {
         private void Start() {
             image = transform.Find("Image").GetComponent<Image>();
             text = transform.Find("Text").GetComponent<TMP_Text>();
-            Debug.Log($"image is {image}");
-            Debug.Log($"text is {text}");
             InvalidateItem();
         }
     

@@ -16,7 +16,7 @@ namespace Items {
 
                 stats.AddNonZero("Luck", eqItem.luck);
                 stats.AddNonZero("Speed", eqItem.speed);
-            } else if (item is ConsumableItem conItem) {
+            } else if (item is UtilityItem conItem) {
                 stats.AddNonZero("Health", conItem.health);
                 stats.AddNonZero("Magic", conItem.magic);
             }

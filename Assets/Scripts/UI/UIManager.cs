@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,6 @@ namespace UI {
 
         protected override void Initialize() {
             choice = FindObjectsOfType<StaticChoice>(true).First(it => it.gameObject.CompareTag("Menu"));
-            //choice = menu.transform.GetComponentInChildren<MenuChoice>(true);
         }
 
         protected override Singleton instance {
@@ -24,6 +24,17 @@ namespace UI {
             PerformActionResult(result);
         }
 
+        public void PerformInteraction(Focusable focusable) {
+            GameManager.INSTANCE.TransitionGameState(GameState.UI);
+            focusStack.Push(focusable);
+            focusable.Focus();
+        }
+
+        public IEnumerator PerformInteractionAsync(Focusable focusable) {
+            PerformInteraction(focusable);
+            yield return new WaitUntil(() => GameManager.INSTANCE.currentGameState == GameState.WORLD);
+        }
+
         public void Interact() {
             switch (GameManager.INSTANCE.currentGameState) {
                 case GameState.WORLD: {
@@ -31,9 +42,7 @@ namespace UI {
                     if (interactible != null) {
                         var focusable = interactible.GetComponent<Focusable>();
                         if (focusable != null) {
-                            GameManager.INSTANCE.TransitionGameState(GameState.UI);
-                            focusStack.Push(focusable);
-                            focusable.Focus();
+                            PerformInteraction(focusable);
                         }
                     }
 

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Items {
     public class DialogueReward : MonoBehaviour {
-        [SerializeField] private InventoryList inventory;
-        [SerializeField] private Item item;
+        public InventoryList inventory;
+        public Item item;
         [SerializeField] private bool granted = false;
 
         private void Start() {

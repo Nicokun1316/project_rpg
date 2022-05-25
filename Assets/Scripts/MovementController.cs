@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Async;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils;
@@ -9,6 +10,11 @@ using Utils;
 public class MovementController : MonoBehaviour
 {
     public Orientation orientation { private set; get; }
+
+    public delegate void MoveEvent();
+
+    public event MoveEvent OnMoveFinished;
+    public event MoveEvent OnMoveStarted;
     
     // Start is called before the first frame update
     private Vector2? destination = null;
@@ -51,12 +57,14 @@ public class MovementController : MonoBehaviour
             
             if (Mathf.Approximately(nx, dx) && Mathf.Approximately(ny, dy)) {
                 destination = null;
+                OnMoveFinished?.Invoke();
             }
         }
     }
 
     private void updateDestination() {
         if (destination is null && inputVector != Vector2.zero) {
+            OnMoveStarted?.Invoke();
             orientation = inputVector switch {
                 (0, 1) => Orientation.Up,
                 (0, -1) => Orientation.Down,
@@ -85,5 +93,11 @@ public class MovementController : MonoBehaviour
 
     public void Move(Vector2 moveVec) {
         inputVector = moveVec;
+    }
+
+    public IEnumerator MoveAsync(Vector2 moveVec) {
+        Move(moveVec);
+        yield return new WaitForCharacterMoveDone(this);
+        Move(Vector2.zero);
     }
 }

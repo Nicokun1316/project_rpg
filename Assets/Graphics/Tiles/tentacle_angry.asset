@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: tentacle_angry
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 1804165707, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: 1999766436, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: 672758951, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: -449779255, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: 1685654605, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: -1817795522, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: 176004894, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: 886445657, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: -554720236, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: 1278649602, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  - {fileID: 1479626761, guid: 48cfd9e95e7c07a46a40e46374c2a1a6, type: 3}
+  m_MinSpeed: 6
+  m_MaxSpeed: 6
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0

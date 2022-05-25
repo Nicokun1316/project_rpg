@@ -1,26 +1,41 @@
 using System;
+using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour {
+public class InputManager : Singleton {
     private GameObject player;
 
-    private Rigidbody2D playerBody;
-
     private MovementController playerController;
+    private Dictionary<String, InputHook> hooks;
 
-    private ContactFilter2D interactibleFilter;
-    // Start is called before the first frame update
-    void Start() {
-        player = GameObject.FindWithTag("Player");
-        playerBody = player.GetComponent<Rigidbody2D>();
-        playerController = player.GetComponent<MovementController>();
-        interactibleFilter.SetLayerMask(LayerMask.GetMask("Interactible"));
-        interactibleFilter.useLayerMask = true;
+    public delegate bool InputHook(InputAction.CallbackContext context);
+
+    public void RegisterInputHook(String action, InputHook hook) {
+        hooks.Add(action, hook);
     }
 
-    public void Move(InputAction.CallbackContext context) {
+    public void UnregisterInputHook(String action) {
+        hooks.Remove(action);
+    }
+
+    private bool ProcessHooks(InputAction.CallbackContext context) {
+        if (hooks.ContainsKey(context.action.name)) {
+            var delete = hooks[context.action.name](context);
+            if (delete) {
+                UnregisterInputHook(context.action.name);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private void Move(InputAction.CallbackContext context) {
+        if (ProcessHooks(context)) return;
+        
         var mv = context.ReadValue<Vector2>();
         Vector2 resultVector;
         if (mv == Vector2.zero) {
@@ -47,8 +62,8 @@ public class InputManager : MonoBehaviour {
         }
     }
 
-    public void Confirm(InputAction.CallbackContext context) {
-        if (!context.performed) {
+    private void Confirm(InputAction.CallbackContext context) {
+        if (!context.performed || ProcessHooks(context)) {
             return;
         }
         var currentState = GameManager.INSTANCE.currentGameState;
@@ -64,8 +79,12 @@ public class InputManager : MonoBehaviour {
         }
     }
 
-    public void Cancel(InputAction.CallbackContext context) {
+    private void Cancel(InputAction.CallbackContext context) {
         if (!context.performed) {
+            return;
+        }
+
+        if (ProcessHooks(context)) {
             return;
         }
 
@@ -79,5 +98,18 @@ public class InputManager : MonoBehaviour {
             case GameState.COMBAT: 
                 break;
         }
+    }
+
+    public static InputManager INSTANCE;
+
+    protected override Singleton instance {
+        get => INSTANCE;
+        set => INSTANCE = value as InputManager;
+    }
+
+    protected override void Initialize() {
+        player = GameObject.FindWithTag("Player");
+        playerController = player.GetComponent<MovementController>();
+        hooks = new();
     }
 }

@@ -12,7 +12,7 @@ public class CameraMan : MonoBehaviour {
 
     private Bounds sceneBounds;
     // Start is called before the first frame update
-    void Start() {
+    void Awake() {
         player = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
         var pixelCamera = GetComponent<PixelPerfectCamera>();
         cameraBounds = new Vector2((float) pixelCamera.refResolutionX / pixelCamera.assetsPPU / 2,
