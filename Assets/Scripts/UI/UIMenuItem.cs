@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using Utils;
 
@@ -6,6 +8,25 @@ namespace UI {
         private GameObject arrowField;
         [SerializeField] private bool hasArrow = true;
         private Blinky blinkyArrow;
+        private TMP_Text tmpText;
+
+        public String text {
+            get {
+                if (tmpText == null) {
+                    tmpText = gameObject.FindRecursive("Text").GetComponent<TMP_Text>();
+                }
+
+                return tmpText.text;
+            }
+
+            set {
+                if (tmpText == null) {
+                    tmpText = gameObject.FindRecursive("Text").GetComponent<TMP_Text>();
+                }
+
+                tmpText.text = value;
+            }
+        }
 
         public GameObject arrow {
             get {

@@ -40,6 +40,10 @@ namespace UI {
                 index = 0;
             }
         }
+
+        public void Reset() {
+        }
+
         private int _index;
 
         public int index {

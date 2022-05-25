@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = System.Object;
 
 namespace UI {
     public class UIManager : Singleton {
@@ -9,6 +11,8 @@ namespace UI {
         public static UIManager INSTANCE { get; private set; }
         private StaticChoice choice;
         private Stack<Focusable> focusStack = new();
+        private Object lastObservedState;
+        [SerializeField] public UIMenuItem itemPrefab;
 
         protected override void Initialize() {
             choice = FindObjectsOfType<StaticChoice>(true).First(it => it.gameObject.CompareTag("Menu"));
@@ -30,9 +34,20 @@ namespace UI {
             focusable.Focus();
         }
 
-        public IEnumerator PerformInteractionAsync(Focusable focusable) {
+        public IEnumerator PerformDialogue(Dialogue dialogue, Action<Dictionary<String, String>> f = null) {
+            var dc = DialogueComponent.Create(dialogue);
+            yield return PerformInteractionAsync(dc, v => f?.Invoke(v as Dictionary<String, String>));
+            Destroy(dc.gameObject);
+            var dm = dialogue as MonoBehaviour;
+            if (dm != null) {
+                Destroy(dm.gameObject);
+            }
+        }
+
+        public IEnumerator PerformInteractionAsync(Focusable focusable, Action<Object> f = null) {
             PerformInteraction(focusable);
             yield return new WaitUntil(() => GameManager.INSTANCE.currentGameState == GameState.WORLD);
+            f?.Invoke(lastObservedState);
         }
 
         public void Interact() {
@@ -51,6 +66,7 @@ namespace UI {
                 case GameState.UI: {
                     var focusable = focusStack.Peek();
                     var result = focusable.Confirm();
+                    lastObservedState = focusable.State();
                     PerformActionResult(result);
                     break;
                 }
@@ -63,6 +79,7 @@ namespace UI {
                     var focusable = focusStack.Peek();
                     var result = focusable.Cancel();
                     PerformActionResult(result);
+                    lastObservedState = focusable.State();
                     break;
                 }
                 case GameState.WORLD: {

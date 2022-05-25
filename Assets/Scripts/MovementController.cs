@@ -92,12 +92,18 @@ public class MovementController : MonoBehaviour
     }
 
     public void Move(Vector2 moveVec) {
+        if (GameManager.IsPhysicsEnabled()) {
+            SetInputVector(moveVec);
+        }
+    }
+
+    private void SetInputVector(Vector2 moveVec) {
         inputVector = moveVec;
     }
 
     public IEnumerator MoveAsync(Vector2 moveVec) {
-        Move(moveVec);
+        SetInputVector(moveVec);
         yield return new WaitForCharacterMoveDone(this);
-        Move(Vector2.zero);
+        SetInputVector(Vector2.zero);
     }
 }

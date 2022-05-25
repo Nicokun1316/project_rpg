@@ -3,6 +3,7 @@
         public UIMenuItem currentSelection => items[index];
         public UIMenuItem[] items { get; }
         public int index { get; set; }
+        public void Reset();
 
         public void Next() {
             index = index + 1;

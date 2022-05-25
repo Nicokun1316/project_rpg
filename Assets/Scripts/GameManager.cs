@@ -10,15 +10,18 @@ public class GameManager : Singleton {
     private Rigidbody2D playerBody;
     private ContactFilter2D findFilter;
     private List<RaycastHit2D> raycastResults = new();
+    private bool physics;
+    public GameState currentGameState { get; private set; }
 
+    public static GameManager INSTANCE;
+
+    public static readonly int PPU = 32;
+    
     public GameManager() {
         currentGameState = GameState.WORLD;
         findFilter.useLayerMask = true;
     }
 
-    public static GameManager INSTANCE;
-
-    public static int PPU = 32;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
     public static void InitializeGame() {
@@ -53,6 +56,7 @@ public class GameManager : Singleton {
         player = GameObject.FindWithTag("Player");
         playerController = player.GetComponent<MovementController>();
         playerBody = player.GetComponent<Rigidbody2D>();
+        physics = true;
     }
 
     protected override Singleton instance {
@@ -60,7 +64,6 @@ public class GameManager : Singleton {
         set => INSTANCE = (GameManager) value;
     }
 
-    public GameState currentGameState { get; private set; }
 
     public void TransitionGameState(GameState newState) {
         currentGameState = newState;
@@ -79,5 +82,14 @@ public class GameManager : Singleton {
         var cr = Physics2D.Raycast(playerBody.position, direction, findFilter, raycastResults, 1.1f);
 
         return cr == 0 ? null : raycastResults.First().collider.gameObject;
+    }
+
+    public static void SetPhysicsEnabled(bool enabled) {
+        INSTANCE.playerController.Move(Vector2.zero);
+        INSTANCE.physics = enabled;
+    }
+
+    public static bool IsPhysicsEnabled() {
+        return INSTANCE.physics;
     }
 }

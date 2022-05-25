@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Items;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
 using MathUtils = Utils.MathUtils;
@@ -9,24 +10,32 @@ using MathUtils = Utils.MathUtils;
 namespace UI {
     public class StaticChoice : MonoBehaviour, MenuChoice {
         private List<UIMenuItem> children;
-
-        void OnEnable() {
-            children = transform.GetComponentsInDirectChildren<UIMenuItem>();
-            currentSelection.select();
-        }
-
         private int _index;
-
         public int index {
             get => _index;
             set {
-                currentSelection.deselect();
+                if (currentSelection != null) {
+                    currentSelection.deselect();
+                }
+
                 _index = MathUtils.mod(value, children.Count);
                 currentSelection.select();
             }
         }
 
-        public UIMenuItem currentSelection => children[index];
+        void OnEnable() {
+            children = transform.GetComponentsInDirectChildren<UIMenuItem>();
+            // _index = 0;
+            currentSelection.select();
+        }
+
+        public void Reset() {
+            children = transform.GetComponentsInDirectChildren<UIMenuItem>();
+            currentSelection.select();
+        }
+
+        public UIMenuItem currentSelection => index < children.Count ? children[index] : null;
+
         public UIMenuItem[] items => children.ToArray();
 
         public void StopAnimation() {

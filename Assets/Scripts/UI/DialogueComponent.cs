@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using Utils;
 
@@ -6,18 +10,47 @@ namespace UI {
     public class DialogueComponent : MonoBehaviour, Focusable {
         private DialogueText textComponent;
         private Dialogue dialogue;
+        private GameObject answerPanel;
+        private MenuChoice choices;
+        private bool isChoosing;
+        private String currentChoiceTag;
+        private Dictionary<String, String> state;
+
+        public static DialogueComponent Create(Dialogue dialogue) {
+            var go = new GameObject("DialogueComponent");
+            var dc = go.AddComponent<DialogueComponent>();
+            dc.dialogue = dialogue;
+            return dc;
+        }
 
         private void Awake() {
-            dialogue = GetComponent<Dialogue>();
+            dialogue ??= GetComponent<Dialogue>();
             textComponent = GameObject.FindObjectsOfType<DialogueText>(true).First(it => it.CompareTag("DialogueText"));
+            answerPanel = textComponent.transform.parent.Find("DialogueChoices").gameObject;
+            choices = answerPanel.GetComponent<MenuChoice>();
         }
 
         public ConfirmResult MoveInput(Vector2 direction) {
-            return direction == Vector2.down ? AdvanceDialogue() : ConfirmResult.DoNothing;
+            if (isChoosing) {
+                if (direction == Vector2.left) {
+                    choices.Previous();
+                } else if (direction == Vector2.right) {
+                    choices.Next();
+                }
+                return ConfirmResult.DoNothing;
+            } else {
+                return direction == Vector2.down ? AdvanceDialogue() : ConfirmResult.DoNothing;
+            }
         }
 
         public ConfirmResult Confirm() {
-            return AdvanceDialogue();
+            if (!isChoosing || !textComponent.revealed) {
+                return AdvanceDialogue();
+            } else {
+                var choice = choices.currentSelection.text;
+                state.Add(currentChoiceTag, choice);
+                return AdvanceDialogue();
+            }
         }
 
         public ConfirmResult Cancel() {
@@ -25,9 +58,10 @@ namespace UI {
         }
 
         public ConfirmResult Focus() {
+            state = new();
             dialogue.startDialogue();
             textComponent.gameObject.parent().SetActive(true);
-            textComponent.textValue = dialogue.current()?.text;
+            textComponent.textValue = dialogue.current()?.Text;
             return ConfirmResult.DoNothing;
         }
 
@@ -50,12 +84,33 @@ namespace UI {
             }
             dialogue.advance();
             var currentChunk = dialogue.current();
+            answerPanel.SetActive(false);
+            foreach (Transform child in answerPanel.transform) {
+                Destroy(child.gameObject);
+            }
+            isChoosing = false;
             if (currentChunk == null) {
                 return ConfirmResult.Return;
             } else {
-                textComponent.textValue = currentChunk.Value.text;
+                var cc = currentChunk.Value;
+                textComponent.textValue = cc.Text;
+                if (cc.Options.Count > 0) {
+                    isChoosing = true;
+                    currentChoiceTag = cc.ChoiceTag;
+                    foreach (var option in cc.Options) {
+                        var item = Instantiate(UIManager.INSTANCE.itemPrefab, answerPanel.transform);
+                        item.text = option;
+                    }
+
+                    choices.index = 0;
+                    answerPanel.SetActive(true);
+                }
                 return ConfirmResult.DoNothing;
             }
+        }
+
+        public object State() {
+            return state;
         }
     }
 }

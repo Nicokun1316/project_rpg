@@ -16,7 +16,7 @@ namespace UI {
         public DialogueChunk? current() {
             var currentText = dialogues[dialogueIndex];
             if (textIndex < currentText.lines.Count) {
-                return new DialogueChunk("", currentText.lines[textIndex]);
+                return currentText.lines[textIndex];
             } else {
                 onFinished?.Invoke();
                 return null;

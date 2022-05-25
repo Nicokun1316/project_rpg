@@ -22,10 +22,14 @@ namespace UI {
         public void SetItem(Item item) {
             itemComponent.item = item;
             description.text = item.description;
-            var statString = item.EnumerateStats().Select(it =>
-                    $"{it.name}: {(it.value > 0 ? $"<color=green>+{it.value}</color>" : $"<color=red>{it.value}</color>")}")
-                .Aggregate((total, nextStat) => $"{total}\n{nextStat}");
-            stats.text = statString;
+            try {
+                var statString = item.EnumerateStats().Select(it =>
+                        $"{it.name}: {(it.value > 0 ? $"<color=green>+{it.value}</color>" : $"<color=red>{it.value}</color>")}")
+                    .Aggregate((total, nextStat) => $"{total}\n{nextStat}");
+                stats.text = statString;
+            } catch (InvalidOperationException e) {
+                stats.text = "";
+            }
         }
 
         public ConfirmResult MoveInput(Vector2 direction) {

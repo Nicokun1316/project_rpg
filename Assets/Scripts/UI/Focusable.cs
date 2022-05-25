@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Object = System.Object;
 
 namespace UI {
     public interface Focusable {
@@ -6,6 +7,11 @@ namespace UI {
         ConfirmResult Confirm();
         ConfirmResult Cancel();
         ConfirmResult Focus();
+
+        Object State() {
+            return null;
+        }
+        
         void Unfocus();
         void Freeze();
         void Unfreeze();

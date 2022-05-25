@@ -5,7 +5,6 @@ using UnityEngine;
 namespace UI {
     [Serializable]
     public class TextSequence {
-        [TextArea]
-        public List<String> lines;
+        public List<DialogueChunk> lines;
     }
 }
