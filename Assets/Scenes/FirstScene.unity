@@ -1455,15 +1455,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogues:
   - lines:
-    - This chest has been here since forever.
-    - You do not know its purpose or origins.
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
   - lines:
-    - There is no treasure to be found. Get lost.
-    - You might find some if you head south, however.
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
   - lines:
-    - Just what is it that you're hoping to find?
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
   - lines:
-    - Nothing good ever comes out of praying idly for a miracle...
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
 --- !u!61 &251503058
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2175,7 +2193,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 40e540bfc4d73754aa94c66a0b60d3bf, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9304,8 +9322,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogues:
   - lines:
-    - The famed northern chest. |It may yield a great reward.
-    - You receive a health potion! Congrations!
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
 --- !u!61 &1233934835
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9537,8 +9561,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogues:
   - lines:
-    - The famed northern chest. |It may yield a great reward.
-    - You receive a health potion! Congrations!
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
 --- !u!61 &1401242235
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9758,8 +9788,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogues:
-  - This is an ordinary chest. |What is it you wish for?
-  - What are you staring around for? Get lost.
+  - author: 
+    text: 
+    choiceTag: 
+    options: []
+  - author: 
+    text: 
+    choiceTag: 
+    options: []
 --- !u!114 &1510332946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9834,8 +9870,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogues:
   - lines:
-    - The famed northern chest. |It may yield a great reward.
-    - You receive a health potion! Congrations!
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
+    - author: 
+      text: 
+      choiceTag: 
+      options: []
 --- !u!61 &1547391270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9973,6 +10015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb815cf277f1364d9f1a688277f19cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 0}
 --- !u!1 &2001594695
 GameObject:
   m_ObjectHideFlags: 0
