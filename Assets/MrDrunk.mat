@@ -20,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _CameraSortingLayerTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: e14393672f492d24c955a71b8ea59152, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -38,7 +42,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _distortion: -1
+    - _distortion: 0.012
+    - _periods: 20
     m_Colors:
     - _A: {r: 0.9, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
