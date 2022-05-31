@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Object = System.Object;
 
@@ -28,26 +29,30 @@ namespace UI {
             PerformActionResult(result);
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public void PerformInteraction(Focusable focusable) {
             GameManager.INSTANCE.TransitionGameState(GameState.UI);
             focusStack.Push(focusable);
             focusable.Focus();
         }
 
-        public IEnumerator PerformDialogue(Dialogue dialogue, Action<Dictionary<String, String>> f = null) {
+        // ReSharper disable Unity.PerformanceAnalysis
+        public async UniTask<Dictionary<String, String>> PerformDialogue(Dialogue dialogue) {
             var dc = DialogueComponent.Create(dialogue);
-            yield return PerformInteractionAsync(dc, v => f?.Invoke(v as Dictionary<String, String>));
+            var dict = await PerformInteractionAsync(dc) as Dictionary<String, String>;
             Destroy(dc.gameObject);
             var dm = dialogue as MonoBehaviour;
             if (dm != null) {
                 Destroy(dm.gameObject);
             }
+
+            return dict;
         }
 
-        public IEnumerator PerformInteractionAsync(Focusable focusable, Action<Object> f = null) {
+        public async UniTask<Object> PerformInteractionAsync(Focusable focusable) {
             PerformInteraction(focusable);
-            yield return new WaitUntil(() => GameManager.INSTANCE.currentGameState == GameState.WORLD);
-            f?.Invoke(lastObservedState);
+            await UniTask.WaitUntil(() => GameManager.INSTANCE.currentGameState == GameState.WORLD);
+            return lastObservedState;
         }
 
         public void Interact() {

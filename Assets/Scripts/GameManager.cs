@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 public class GameManager : Singleton {
-    private MovementController playerController;
+    private InputController playerController;
     private GameObject player;
     private Rigidbody2D playerBody;
     private ContactFilter2D findFilter;
@@ -54,7 +54,7 @@ public class GameManager : Singleton {
 
     protected override void Initialize() {
         player = GameObject.FindWithTag("Player");
-        playerController = player.GetComponent<MovementController>();
+        playerController = player.GetComponent<InputController>();
         playerBody = player.GetComponent<Rigidbody2D>();
         physics = true;
     }
@@ -85,7 +85,7 @@ public class GameManager : Singleton {
     }
 
     public static void SetPhysicsEnabled(bool enabled) {
-        INSTANCE.playerController.Move(Vector2.zero);
+        INSTANCE.playerController.Mv(Vector2.zero);
         INSTANCE.physics = enabled;
     }
 

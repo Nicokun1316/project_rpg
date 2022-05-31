@@ -8,6 +8,7 @@ namespace UI {
         public Observable<String> currentText;
         public bool revealed { get; private set; }
         private bool continueText = false;
+        private bool isParsingTags = false;
 
         public RevealingText(String completeText) {
             this.completeText = completeText;
@@ -18,14 +19,27 @@ namespace UI {
         public IEnumerator RevealText() {
             revealed = false;
             foreach (var character in completeText) {
-                if (character == '|') {
-                    continueText = false;
-                    yield return new WaitUntil(() => continueText);
-                    continueText = false;
-                } else {
-                    currentText.set(currentText.get() + character);
-                    if (!continueText) {
-                        yield return new WaitForSeconds(0.05f);
+                switch (character) {
+                    case '|':
+                        continueText = false;
+                        yield return new WaitUntil(() => continueText);
+                        continueText = false;
+                        break;
+                    case '<':
+                        currentText.set(currentText.get() + character);
+                        isParsingTags = true;
+                        break;
+                    default: {
+                        currentText.set(currentText.get() + character);
+                        if (isParsingTags) {
+                            if (character == '>') isParsingTags = false;
+                        } else {
+                            if (!continueText) {
+                                yield return new WaitForSeconds(0.05f);
+                            }
+                        }
+
+                        break;
                     }
                 }
             }

@@ -94,7 +94,7 @@ namespace UI {
             } else {
                 var cc = currentChunk.Value;
                 textComponent.textValue = cc.Text;
-                if (cc.Options.Count > 0) {
+                if ((cc.Options?.Count ?? 0) > 0) {
                     isChoosing = true;
                     currentChoiceTag = cc.ChoiceTag;
                     foreach (var option in cc.Options) {

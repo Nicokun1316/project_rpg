@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class InputManager : Singleton {
     private GameObject player;
 
-    private MovementController playerController;
+    private InputController playerController;
     private Dictionary<String, InputHook> hooks;
 
     public delegate bool InputHook(InputAction.CallbackContext context);
@@ -54,7 +54,7 @@ public class InputManager : Singleton {
 
                 break;
             case GameState.WORLD:
-                playerController.Move(resultVector);
+                playerController.Mv(resultVector);
                 break;
             case GameState.COMBAT:
                 break;
@@ -109,7 +109,7 @@ public class InputManager : Singleton {
 
     protected override void Initialize() {
         player = GameObject.FindWithTag("Player");
-        playerController = player.GetComponent<MovementController>();
+        playerController = player.GetComponent<InputController>();
         hooks = new();
     }
 }

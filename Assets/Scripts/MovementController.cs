@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Async;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils;
@@ -11,19 +9,13 @@ public class MovementController : MonoBehaviour
 {
     public Orientation orientation { private set; get; }
 
-    public delegate void MoveEvent();
-
-    public event MoveEvent OnMoveFinished;
-    public event MoveEvent OnMoveStarted;
-    
-    // Start is called before the first frame update
-    private Vector2? destination = null;
     private Rigidbody2D body;
-    private Vector2 inputVector;
     private Vector2 virtualPosition;
 
     [SerializeField] private float speed = 1;
     [SerializeField] private List<Tilemap> obstacleMaps;
+    private bool moving = false;
+    public bool isMoving => moving;
     
     void Start() {
         body = GetComponent<Rigidbody2D>();
@@ -31,79 +23,50 @@ public class MovementController : MonoBehaviour
         orientation = Orientation.Up;
     }
 
-    // Update is called once per frame
-    void FixedUpdate() {
-        if (GameManager.INSTANCE.currentGameState != GameState.WORLD) {
-            return;
-        }
-        updateDestination();
+    public async UniTask MoveCharacter(Vector2 offset, Orientation orientation) {
+        if (moving) return;
+        this.orientation = orientation;
+        var d = acquireDestination(offset);
+        if (d == null) return;
         
-        var delta = speed * Time.fixedDeltaTime;
+        moving = true;
+        var destination = d.Value;
         
-        if (destination is not null) {
-            var (cx, cy) = virtualPosition;
-            var (dx, dy) = destination.Value;
-            var (nx, ny) = (cx, dx) switch {
-                var (_, _) when cx < dx => (Math.Min(cx + delta, dx), cy),
-                var (_, _) when cx > dx => (Math.Max(cx - delta, dx), cy),
-                var (_, _) when cy < dy => (cx, Math.Min(cy + delta, dy)),
-                var (_, _) when cy > dy => (cx, Math.Max(cy - delta, dy)),
-                var (_, _) => (cx, cy)
-            };
-            
-            virtualPosition = new Vector2(nx, ny);
-            body.position = GameManager.PixelClamp(virtualPosition);
-
-            
-            if (Mathf.Approximately(nx, dx) && Mathf.Approximately(ny, dy)) {
-                destination = null;
-                OnMoveFinished?.Invoke();
-            }
-        }
-    }
-
-    private void updateDestination() {
-        if (destination is null && inputVector != Vector2.zero) {
-            OnMoveStarted?.Invoke();
-            orientation = inputVector switch {
-                (0, 1) => Orientation.Up,
-                (0, -1) => Orientation.Down,
-                (1, 0) => Orientation.Right,
-                (-1, 0) => Orientation.Left,
-                _ => orientation
-            };
-            var (x, y) = inputVector;
-            var (cx, cy) = virtualPosition;
-            Vector2? dest = null;
-            if (x != 0) {
-                dest = x > 0 ? new Vector2(cx + 1, cy) : new Vector2(cx - 1, cy);
-            } else if (y != 0) {
-                dest = y > 0 ? new Vector2(cx, cy + 1) : new Vector2(cx, cy - 1);
+        while (virtualPosition != destination) {
+            await UniTask.WaitForFixedUpdate();
+            if (GameManager.INSTANCE.currentGameState != GameState.WORLD) {
+                continue;
             }
 
-            if (dest is not null) {
-                var d = Vector3Int.FloorToInt((Vector3) dest);
-                var isObstructed = obstacleMaps.Any(m => m.HasTile(d));
-                if (!isObstructed) {
-                    destination = dest;
-                }
-            }
+            var delta = speed * Time.fixedDeltaTime;
+            var distance = Vector2.Distance(destination, virtualPosition);
+            var maxOffset = Vector2.ClampMagnitude(offset * delta, distance);
+            var newPosition = virtualPosition + maxOffset;
+            virtualPosition = newPosition;
+            body.position = GameManager.PixelClamp(newPosition);
         }
+
+        moving = false;
     }
 
-    public void Move(Vector2 moveVec) {
-        if (GameManager.IsPhysicsEnabled()) {
-            SetInputVector(moveVec);
-        }
+    public async UniTask MoveCharacter(Vector2 offset) {
+        await MoveCharacter(offset, orientationFor(offset));
     }
 
-    private void SetInputVector(Vector2 moveVec) {
-        inputVector = moveVec;
-    }
+    private Orientation orientationFor(Vector2 moveVector) => moveVector switch {
+        (0, 1) => Orientation.Up,
+        (0, -1) => Orientation.Down,
+        (1, 0) => Orientation.Right,
+        (-1, 0) => Orientation.Left,
+        _ => orientation
+    };
 
-    public IEnumerator MoveAsync(Vector2 moveVec) {
-        SetInputVector(moveVec);
-        yield return new WaitForCharacterMoveDone(this);
-        SetInputVector(Vector2.zero);
+    private Vector2? acquireDestination(Vector2 offset) {
+        if (offset == Vector2.zero) return null;
+
+        var destination = virtualPosition + offset;
+        var tilePosition = Vector3Int.FloorToInt(destination);
+        var isObstructed = obstacleMaps.Any(m => m.HasTile(tilePosition));
+        return isObstructed ? null : destination;
     }
 }

@@ -15,6 +15,7 @@ namespace UI {
             updateText = (_, newValue) => {
                 text = newValue;
             };
+            
         }
 
         public String textValue {
