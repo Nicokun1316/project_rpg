@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d60ca29d2cf545de9cb989c96e657774, type: 3}
   m_Name: Whiskey
   m_EditorClassIdentifier: 
-  itemName: Bottle of Whiskey
-  description: If you gulp it down, you are sure to feel a surge of courage.
+  itemName: Courage
+  description: '''Courage'' is a cheap brand of whiskey.'
   cost: 5
   id: 10001
   icon: {fileID: 2800000, guid: 3c861f5c3fe0c5f4fb75f4373ad151bd, type: 3}

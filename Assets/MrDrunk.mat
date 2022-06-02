@@ -43,7 +43,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _distortion: 0.012
-    - _periods: 20
+    - _periods: 10
     m_Colors:
     - _A: {r: 0.9, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []

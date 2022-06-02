@@ -19,7 +19,7 @@ namespace Kyara {
         public String characterName => _characterName;
         public CharacterStatBlock currentStats => _statBlock.statProgression[level];
         
-        public bool addExperience(int exp) {
+        public bool AddExperience(int exp) {
             _experience += exp;
             var i = _statBlock.statProgression.FindIndex(b => b.requiredXP > _experience) - 1;
             if (i < 0) i = _statBlock.statProgression.Count - 1;
