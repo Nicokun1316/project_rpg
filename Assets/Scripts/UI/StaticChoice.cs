@@ -14,36 +14,36 @@ namespace UI {
         public int index {
             get => _index;
             set {
-                if (currentSelection != null) {
-                    currentSelection.deselect();
+                if (currentSelectedMenuItem != null) {
+                    currentSelectedMenuItem.deselect();
                 }
 
                 _index = MathUtils.mod(value, children.Count);
-                currentSelection.select();
+                currentSelectedMenuItem.select();
             }
         }
 
         void OnEnable() {
             children = transform.GetComponentsInDirectChildren<UIMenuItem>();
             // _index = 0;
-            currentSelection.select();
+            currentSelectedMenuItem.select();
         }
 
         public void Reset() {
             children = transform.GetComponentsInDirectChildren<UIMenuItem>();
-            currentSelection.select();
+            currentSelectedMenuItem.select();
         }
 
-        public UIMenuItem currentSelection => index < children.Count ? children[index] : null;
+        public UIMenuItem currentSelectedMenuItem => index < children.Count ? children[index] : null;
 
-        public UIMenuItem[] items => children.ToArray();
+        public UIMenuItem[] menuItems => children.ToArray();
 
         public void StopAnimation() {
-            currentSelection.StopAnimation();
+            currentSelectedMenuItem.StopAnimation();
         }
 
         public void ResumeAnimation() {
-            currentSelection.ResumeAnimation();
+            currentSelectedMenuItem.ResumeAnimation();
         }
     }
 }

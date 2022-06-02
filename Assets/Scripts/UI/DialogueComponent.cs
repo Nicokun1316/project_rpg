@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace UI {
     public class DialogueComponent : MonoBehaviour, Focusable {
         private DialogueText textComponent;
         private Dialogue dialogue;
+        private TMP_Text dialogueName;
         private GameObject answerPanel;
         private MenuChoice choices;
         private bool isChoosing;
@@ -26,8 +28,10 @@ namespace UI {
         private void Awake() {
             dialogue ??= GetComponent<Dialogue>();
             textComponent = GameObject.FindObjectsOfType<DialogueText>(true).First(it => it.CompareTag("DialogueText"));
-            answerPanel = textComponent.transform.parent.Find("DialogueChoices").gameObject;
+            var dialogueContainer = textComponent.transform.parent;
+            answerPanel = dialogueContainer.Find("DialogueChoices").gameObject;
             choices = answerPanel.GetComponent<MenuChoice>();
+            dialogueName = dialogueContainer.Find("Name").GetComponent<TMP_Text>();
         }
 
         public ConfirmResult MoveInput(Vector2 direction) {
@@ -47,7 +51,7 @@ namespace UI {
             if (!isChoosing || !textComponent.revealed) {
                 return AdvanceDialogue();
             } else {
-                var choice = choices.currentSelection.text;
+                var choice = choices.currentSelectedMenuItem.text;
                 state.Add(currentChoiceTag, choice);
                 return AdvanceDialogue();
             }
@@ -62,6 +66,7 @@ namespace UI {
             dialogue.startDialogue();
             textComponent.gameObject.parent().SetActive(true);
             textComponent.textValue = dialogue.current()?.Text;
+            dialogueName.text = dialogue.current()?.Author ?? "";
             return ConfirmResult.DoNothing;
         }
 
@@ -94,6 +99,7 @@ namespace UI {
             } else {
                 var cc = currentChunk.Value;
                 textComponent.textValue = cc.Text;
+                dialogueName.text = cc.Author ?? "";
                 if ((cc.Options?.Count ?? 0) > 0) {
                     isChoosing = true;
                     currentChoiceTag = cc.ChoiceTag;

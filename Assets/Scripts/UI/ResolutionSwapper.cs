@@ -7,7 +7,7 @@ namespace UI {
         // Start is called before the first frame update
         void Start() {
             radio = GetComponent<RadioGroup>();
-            var items = radio.choice.items;
+            var items = radio.choice.menuItems;
             if (!PlayerPrefs.HasKey("Resolution")) {
                 PlayerPrefs.SetString("Resolution", "1");
             }

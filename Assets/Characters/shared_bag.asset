@@ -12,13 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a12fbc474d24fdeab33f1398b5078c3, type: 3}
   m_Name: shared_bag
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 11400000, guid: bf95ddddc36db3c40be1a9a376acf70a, type: 2}
-  - {fileID: 11400000, guid: 6da011c38442fa344bb93e7d39ef2b4f, type: 2}
-  - {fileID: 11400000, guid: bf95ddddc36db3c40be1a9a376acf70a, type: 2}
-  - {fileID: 11400000, guid: 1a80b04d04325c44a98644704770d526, type: 2}
-  - {fileID: 11400000, guid: bf95ddddc36db3c40be1a9a376acf70a, type: 2}
-  - {fileID: 11400000, guid: bf95ddddc36db3c40be1a9a376acf70a, type: 2}
-  - {fileID: 11400000, guid: bf95ddddc36db3c40be1a9a376acf70a, type: 2}
-  - {fileID: 11400000, guid: 6da011c38442fa344bb93e7d39ef2b4f, type: 2}
-  - {fileID: 11400000, guid: 6da011c38442fa344bb93e7d39ef2b4f, type: 2}
+  items: []

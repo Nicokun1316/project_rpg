@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bottle of Whiskey
   description: If you gulp it down, you are sure to feel a surge of courage.
-  cost: 0
+  cost: 5
   id: 10001
-  icon: {fileID: 2800000, guid: 4164359b276a6e04da4d5ae24486a845, type: 3}
-  health: 0
-  magic: 0
-  isConsumable: 0
+  icon: {fileID: 2800000, guid: 3c861f5c3fe0c5f4fb75f4373ad151bd, type: 3}
+  health: -5
+  magic: 5
+  isConsumable: 1

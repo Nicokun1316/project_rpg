@@ -22,16 +22,16 @@ namespace UI {
             } else if (direction == Vector2.left) {
                 choice.Previous();
             } else if (direction == Vector2.down) {
-                choice.currentSelection.GetComponent<Focusable>().MoveInput(Vector2.right);
+                choice.currentSelectedMenuItem.GetComponent<Focusable>().MoveInput(Vector2.right);
             } else if (direction == Vector2.up) {
-                choice.currentSelection.GetComponent<Focusable>().MoveInput(Vector2.left);
+                choice.currentSelectedMenuItem.GetComponent<Focusable>().MoveInput(Vector2.left);
             }
 
             return ConfirmResult.DoNothing;
         }
 
         public virtual ConfirmResult Confirm() {
-            return ConfirmResult.ChangeFocus(choice.currentSelection.GetComponent<Focusable>());
+            return ConfirmResult.ChangeFocus(choice.currentSelectedMenuItem.GetComponent<Focusable>());
         }
 
         public virtual ConfirmResult Cancel() {
