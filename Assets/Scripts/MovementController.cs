@@ -21,6 +21,10 @@ public class MovementController : MonoBehaviour
     private static readonly int Horizontal = Animator.StringToHash("Horizontal");
     private static readonly int Vertical = Animator.StringToHash("Vertical");
     public bool isMoving => moving;
+    public float Speed {
+        get => speed;
+        set => speed = value;
+    }
     
     void Start() {
         body = GetComponent<Rigidbody2D>();
@@ -31,9 +35,8 @@ public class MovementController : MonoBehaviour
 
     public async UniTask MoveCharacter(Vector2 offset, Orientation orientation) {
         if (moving) return;
-        this.orientation = orientation;
+        Turn(orientation);
         var d = acquireDestination(offset);
-        UpdateAnimator();
         if (d == null) return;
         
         moving = true;
@@ -58,6 +61,11 @@ public class MovementController : MonoBehaviour
 
     public async UniTask MoveCharacter(Vector2 offset) {
         await MoveCharacter(offset, orientationFor(offset));
+    }
+
+    public void Turn(Orientation orientation) {
+        this.orientation = orientation;
+        UpdateAnimator();
     }
 
     private void UpdateAnimator() {
