@@ -31,7 +31,8 @@ namespace UI {
         }
 
         public virtual ConfirmResult Confirm() {
-            return ConfirmResult.ChangeFocus(choice.currentSelectedMenuItem.GetComponent<Focusable>());
+            var focusable = choice.currentSelectedMenuItem.GetComponent<Focusable>();
+            return focusable == null ? ConfirmResult.DoNothing : ConfirmResult.ChangeFocus(focusable);
         }
 
         public virtual ConfirmResult Cancel() {
@@ -49,11 +50,11 @@ namespace UI {
         }
 
         public virtual void Freeze() {
-            choice.StopAnimation();
+            choice?.StopAnimation();
         }
 
         public virtual void Unfreeze() {
-            choice.ResumeAnimation();
+            choice?.ResumeAnimation();
         }
     }
 }

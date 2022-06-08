@@ -1,19 +1,18 @@
 ﻿using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
-namespace UI {
-    public class SimpleDialogue : MonoBehaviour, Dialogue {
+namespace UI.Dialogue {
+    [Serializable]
+    public class SimpleDialogue : /*MonoBehaviour,*/ Dialogue {
         [SerializeField] private DialogueChunk text;
         private DialogueChunk? currentChunk = null;
         private event Dialogue.OnDialogueFinished onFinished;
+        public SimpleDialogue() {}
 
-        public static SimpleDialogue Create(DialogueChunk chunk) {
-            var go = new GameObject("Dialogue");
-            var sd = go.AddComponent<SimpleDialogue>();
-            sd.text = chunk;
-            return sd;
+        public SimpleDialogue(DialogueChunk chunk) {
+            text = chunk;
         }
+
         public void startDialogue() {
             currentChunk = text;
         }

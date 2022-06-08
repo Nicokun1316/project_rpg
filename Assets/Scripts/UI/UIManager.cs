@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using UI.Dialogue;
 using UnityEngine;
 using Object = System.Object;
 
@@ -37,7 +38,7 @@ namespace UI {
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public async UniTask<Dictionary<String, String>> PerformDialogue(Dialogue dialogue) {
+        public async UniTask<Dictionary<String, String>> PerformDialogueUnsafe(Dialogue.Dialogue dialogue) {
             var dc = DialogueComponent.Create(dialogue);
             var dict = await PerformInteractionAsync(dc) as Dictionary<String, String>;
             Destroy(dc.gameObject);
@@ -47,6 +48,23 @@ namespace UI {
             }
 
             return dict;
+        }
+
+        public async UniTask<Dictionary<String, String>> PerformDialogue(Dialogue.Dialogue dialogue) {
+            var result = await PerformDialogueUnsafe(dialogue);
+            return result;
+        }
+
+        public async UniTask<Dictionary<String, String>> PerformDialogue(DialogueChunk chunk) {
+            var dialogue = new SimpleDialogue(chunk);
+            var result = await PerformDialogue(dialogue);
+            return result;
+        }
+
+        public async UniTask<Dictionary<String, String>> PerformDialogue(List<DialogueChunk> chunks) {
+            var dialogue = new MultilineDialogue(chunks);
+            var result = await PerformDialogue(dialogue);
+            return result;
         }
 
         public async UniTask<Object> PerformInteractionAsync(Focusable focusable) {

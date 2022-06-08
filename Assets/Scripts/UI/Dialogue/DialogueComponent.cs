@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using Utils;
 
-namespace UI {
+namespace UI.Dialogue {
     public class DialogueComponent : MonoBehaviour, Focusable {
         private DialogueText textComponent;
         private Dialogue dialogue;
@@ -26,7 +24,12 @@ namespace UI {
         }
 
         private void Awake() {
-            dialogue ??= GetComponent<Dialogue>();
+            // we don't want to bypass unity's lifetime check
+            bool dialogueEmpty = dialogue is MonoBehaviour behaviour ? behaviour == null : dialogue == null;
+            if (dialogueEmpty) {
+                dialogue = GetComponent<Dialogue>();
+            }
+            
             textComponent = GameObject.FindObjectsOfType<DialogueText>(true).First(it => it.CompareTag("DialogueText"));
             var dialogueContainer = textComponent.transform.parent;
             answerPanel = dialogueContainer.Find("DialogueChoices").gameObject;
@@ -62,6 +65,11 @@ namespace UI {
         }
 
         public ConfirmResult Focus() {
+            bool dialogueEmpty = dialogue is MonoBehaviour behaviour ? behaviour == null : dialogue == null;
+            // check if the dialogue has been destroyed and fetch a new one if it has
+            if (dialogueEmpty) {
+                dialogue = GetComponent<Dialogue>();
+            }
             state = new();
             dialogue.startDialogue();
             textComponent.gameObject.parent().SetActive(true);

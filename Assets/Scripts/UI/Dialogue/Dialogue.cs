@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UI {
+namespace UI.Dialogue {
     public interface Dialogue {
         public delegate void OnDialogueFinished();
         public void startDialogue();

@@ -2,7 +2,7 @@
 using System.Collections;
 using TMPro;
 
-namespace UI {
+namespace UI.Dialogue {
     public class DialogueText: TextMeshProUGUI {
         private RevealingText rText = null;
         private IEnumerator runningText = null;

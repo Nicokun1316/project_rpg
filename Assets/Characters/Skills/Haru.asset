@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112ddde515fc42bf9d9ebf3d53b40b50, type: 3}
   m_Name: Haru
   m_EditorClassIdentifier: 
+  id: 2001
   skillName: Haru
-  description: 'A simple magick which summons a small flame, dealing small <color="red">fire</color>
-    damage to a single target.
-
-    Can be used to light up your way in the dark.'
+  description: "Summons a tiny flame, dealing small <sprite=\"elements\" name=\"fire\"><color=\"red\">fire</color>\r
+    damage to a single target.\r\nCan be used to light up your way in the dark."
+  icon: {fileID: 2800000, guid: 447022ad31434c345bf72351591a847c, type: 3}
   costs:
   - value: 2
     type: 0
@@ -31,5 +31,3 @@ MonoBehaviour:
       value: 2
       scalingType: 1
       scaling: 1.2
-  icon: {fileID: 0}
-  id: 2001

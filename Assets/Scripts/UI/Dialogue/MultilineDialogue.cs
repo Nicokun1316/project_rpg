@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UI {
-    public class MultilineDialogue : MonoBehaviour, Dialogue {
+namespace UI.Dialogue {
+    [Serializable]
+    public class MultilineDialogue : /*MonoBehaviour,*/ Dialogue {
         [SerializeField] private List<DialogueChunk> dialogues;
         private int currentIndex = 0;
         private event Dialogue.OnDialogueFinished onFinished;
 
-        public static MultilineDialogue Create(List<DialogueChunk> dialogues) {
-            var go = new GameObject("");
-            var md = go.AddComponent<MultilineDialogue>();
-            md.dialogues = dialogues;
-            return md;
+        public MultilineDialogue() {
+            dialogues = new List<DialogueChunk>();
+        }
+
+        public MultilineDialogue(List<DialogueChunk> chunks) {
+            dialogues = chunks;
+        }
+
+        public void initialize(List<DialogueChunk> dialogues) {
+            this.dialogues = dialogues;
         }
         public void startDialogue() {
             currentIndex = 0;

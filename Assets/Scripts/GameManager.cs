@@ -67,6 +67,7 @@ public class GameManager : Singleton {
 
     public void TransitionGameState(GameState newState) {
         currentGameState = newState;
+        SetPhysicsEnabled(newState == GameState.WORLD);
     }
     
     public GameObject FindObjectInFrontOfPlayer(int mask) {

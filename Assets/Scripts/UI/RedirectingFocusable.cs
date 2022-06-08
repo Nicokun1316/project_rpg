@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace UI {
     public interface RedirectingFocusable : Focusable {
@@ -21,9 +22,14 @@ namespace UI {
         }
 
         ConfirmResult Focusable.Focus() {
-            var tar = target;
-            InitializeTarget(tar);
-            return ConfirmResult.ChangeFocus(tar);
+            try {
+                var tar = target;
+                if (tar == null) return ConfirmResult.Return;
+                InitializeTarget(tar);
+                return ConfirmResult.ChangeFocus(tar);
+            } catch (NullReferenceException) {
+                return ConfirmResult.Return;
+            }
         }
 
         void Focusable.Unfocus() { }

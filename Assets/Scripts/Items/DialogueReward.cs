@@ -1,5 +1,6 @@
 ﻿using System;
 using UI;
+using UI.Dialogue;
 using UnityEngine;
 
 namespace Items {

@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UI;
+using UI.Dialogue;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;

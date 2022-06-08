@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UI {
+namespace UI.Dialogue {
     [Serializable]
     public struct DialogueChunk {
         public DialogueChunk(String author, String text, String choiceTag = null, List<String> options = null) {

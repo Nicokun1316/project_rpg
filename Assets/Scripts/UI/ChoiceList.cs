@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Skills;
 using UnityEngine;
 using Utils;
 
@@ -31,7 +32,6 @@ namespace UI {
                     }
                     
                     for (int i = 0; i < pageLength && startingIndex + i < _choices.Count; ++i) {
-                        Debug.Log($"i = {i}, chilcount = {children.Count}, startindex = {startingIndex}, itemslen = {_choices.Count}; itemsindex = {startingIndex + i}");
                         children[i].GetComponent<GenericItemComponent<T>>().item = _choices[startingIndex + i];
                     }
 

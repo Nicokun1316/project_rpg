@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -12,22 +13,27 @@ public class MovementController : MonoBehaviour
 
     private Rigidbody2D body;
     private Vector2 virtualPosition;
+    private Animator animator;
 
     [SerializeField] private float speed = 1;
     [SerializeField] private List<Tilemap> obstacleMaps;
     private bool moving = false;
+    private static readonly int Horizontal = Animator.StringToHash("Horizontal");
+    private static readonly int Vertical = Animator.StringToHash("Vertical");
     public bool isMoving => moving;
     
     void Start() {
         body = GetComponent<Rigidbody2D>();
         virtualPosition = body.position;
         orientation = Orientation.Up;
+        animator = GetComponent<Animator>();
     }
 
     public async UniTask MoveCharacter(Vector2 offset, Orientation orientation) {
         if (moving) return;
         this.orientation = orientation;
         var d = acquireDestination(offset);
+        UpdateAnimator();
         if (d == null) return;
         
         moving = true;
@@ -52,6 +58,22 @@ public class MovementController : MonoBehaviour
 
     public async UniTask MoveCharacter(Vector2 offset) {
         await MoveCharacter(offset, orientationFor(offset));
+    }
+
+    private void UpdateAnimator() {
+        var moveVec = orientation switch {
+            Orientation.Down => Vector2.down,
+            Orientation.Up => Vector2.up,
+            Orientation.Left => Vector2.left,
+            Orientation.Right => Vector2.right,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        var (x, y) = moveVec;
+        if (animator != null) {
+            animator.SetFloat(Horizontal, x);
+            animator.SetFloat(Vertical, y);
+        }
     }
 
     private Orientation orientationFor(Vector2 moveVector) => moveVector switch {

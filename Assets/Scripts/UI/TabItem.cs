@@ -5,6 +5,6 @@ namespace UI {
         [SerializeField]
         private GameObject targetTab;
 
-        Focusable RedirectingFocusable.target => targetTab.GetComponent<Focusable>();
+        Focusable RedirectingFocusable.target => targetTab != null ? targetTab.GetComponent<Focusable>() : null;
     }
 }
