@@ -1,4 +1,7 @@
 ﻿using System;
+using Items;
+using Skills;
+using UI;
 
 namespace Utils {
     public static class T {
@@ -20,6 +23,11 @@ namespace Utils {
             GColor.MenuRef => Color(Utils.Color.Blue),
             _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
         };
+
+        public static String Rep(Skill skill) => $"<{Color(GColor.Skill)}>{skill.skillName.ToUpper()}</color>";
+        public static String Rep(MenuEnum menu) => $"<{Color(GColor.MenuRef)}>{menu.toString()}</color>";
+        public static String Rep(Item item) => $"<{Color(GColor.Item)}>{item.itemName.ToUpper()}</color>";
+
     }
 
     public enum Color {
