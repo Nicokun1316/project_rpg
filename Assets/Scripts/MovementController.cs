@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using Utils;
 
@@ -20,6 +19,7 @@ public class MovementController : MonoBehaviour
     private bool moving = false;
     private static readonly int Horizontal = Animator.StringToHash("Horizontal");
     private static readonly int Vertical = Animator.StringToHash("Vertical");
+    private static readonly int Moving = Animator.StringToHash("Moving");
     public bool isMoving => moving;
     public float Speed {
         get => speed;
@@ -36,11 +36,13 @@ public class MovementController : MonoBehaviour
     public async UniTask MoveCharacter(Vector2 offset, Orientation orientation) {
         if (moving) return;
         Turn(orientation);
-        var d = acquireDestination(offset);
+        var d = AcquireDestination(offset);
         if (d == null) return;
         
         moving = true;
         var destination = d.Value;
+        
+        animator.SetBool(Moving, true);
 
         while (virtualPosition != destination) {
             await UniTask.WaitForFixedUpdate();
@@ -55,12 +57,14 @@ public class MovementController : MonoBehaviour
             virtualPosition = newPosition;
             body.position = GameManager.PixelClamp(newPosition);
         }
+        
+        animator.SetBool(Moving, false);
 
         moving = false;
     }
 
     public async UniTask MoveCharacter(Vector2 offset) {
-        await MoveCharacter(offset, orientationFor(offset));
+        await MoveCharacter(offset, OrientationFor(offset));
     }
 
     public void Turn(Orientation orientation) {
@@ -82,9 +86,11 @@ public class MovementController : MonoBehaviour
             animator.SetFloat(Horizontal, x);
             animator.SetFloat(Vertical, y);
         }
+
+        animator.speed = speed / 4;
     }
 
-    private Orientation orientationFor(Vector2 moveVector) => moveVector switch {
+    private Orientation OrientationFor(Vector2 moveVector) => moveVector switch {
         (0, 1) => Orientation.Up,
         (0, -1) => Orientation.Down,
         (1, 0) => Orientation.Right,
@@ -92,7 +98,7 @@ public class MovementController : MonoBehaviour
         _ => orientation
     };
 
-    private Vector2? acquireDestination(Vector2 offset) {
+    private Vector2? AcquireDestination(Vector2 offset) {
         if (offset == Vector2.zero) return null;
 
         var destination = virtualPosition + offset;

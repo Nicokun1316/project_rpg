@@ -27,7 +27,7 @@ namespace Cutscene.AbyssIntro {
             mikeChara = mikeObject.GetComponent<GameCharacter>();
             mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<CameraFX>();
             alcoholWarnings = new List<DialogueChunk> {
-                new("", $"You down the whole {T.Rep(courage)}."),
+                new("", $"You down the whole {courage.Rep()}."),
                 new("", "Short term effects of drinking alcohol include:\n|*Changes in mood\n|*Lowered inhibitions"),
                 new("", "*Impulsive behaviour\n|*Slowed or slurred speech\n|*Explosive diarrhoea"),
                 new("",
@@ -61,23 +61,27 @@ namespace Cutscene.AbyssIntro {
             }
 
             if (!scared) {
-                var delay = TimeSpan.FromMilliseconds(1000);
                 AddCourageToDrawer();
-                await mainCamera.Shake(0.5f, 1);
-                await UniTask.Delay(delay);
-                mike.Turn(Orientation.Right);
-                await UniTask.Delay(delay);
-                mike.Turn(Orientation.Down);
-                await UniTask.Delay(delay);
-                mike.Turn(Orientation.Left);
-                await UniTask.Delay(delay);
-                mike.Turn(Orientation.Down);
-                await UniTask.Delay(delay);
-                await UIManager.INSTANCE.PerformDialogue(new DialogueChunk("",
-                    "You hear a loud bang coming from the south.        \nPerhaps its worth checking out?"));
+                await Bang();
             }
 
             scared = true;
+        }
+
+        private async UniTask Bang() {
+            var delay = TimeSpan.FromMilliseconds(1000);
+            await mainCamera.Shake(0.5f, 1);
+            await UniTask.Delay(delay);
+            mike.Turn(Orientation.Right);
+            await UniTask.Delay(delay);
+            mike.Turn(Orientation.Down);
+            await UniTask.Delay(delay);
+            mike.Turn(Orientation.Left);
+            await UniTask.Delay(delay);
+            mike.Turn(Orientation.Down);
+            await UniTask.Delay(delay);
+            await UIManager.INSTANCE.PerformDialogue(new DialogueChunk("",
+                "You hear a loud bang coming from the south.        \nPerhaps its worth checking out?"));
         }
 
 
@@ -109,7 +113,7 @@ namespace Cutscene.AbyssIntro {
             var md = drawer.AddComponent<MultilineDialogueComponent>();
             md.Initialize(new List<DialogueChunk> {
                 new("",
-                    $"Inconspicuously, a new object has appeared in the drawer.\n|You receive {T.Rep(courage)}.\n|Access your inventory through the {T.Rep(MenuEnum.Items)} menu.")
+                    $"Inconspicuously, a new object has appeared in the drawer.\n|You receive {courage.Rep()}.\n|Access your inventory through the {MenuEnum.Items.Rep()} menu.")
             });
 
             md.dialogue.AddFinishedListener(() => {

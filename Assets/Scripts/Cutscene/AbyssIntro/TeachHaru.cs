@@ -24,7 +24,7 @@ namespace Cutscene.AbyssIntro {
             mikeChara = mikeObject.GetComponent<GameCharacter>();
             teachDialogue = new List<DialogueChunk> {
                 new("", "You cannot see anything.\n|Surrounded by the ever-darkness, you begin to remember who you are."),
-                new("", $"You learn {T.Rep(haru)}.\n|Access your skills through the <{T.Color(GColor.MenuRef)}>Skills</color> menu.")
+                new("", $"You learn {haru.Rep()}.\n|Access your skills through the {MenuEnum.Skills.Rep()} menu.")
             };
         }
 
