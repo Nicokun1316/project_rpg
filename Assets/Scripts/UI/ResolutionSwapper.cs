@@ -19,20 +19,7 @@ namespace UI {
                 var value = selection.GetComponent<ValueHolder>().value;
                 PlayerPrefs.SetString("Resolution", value);
                 PlayerPrefs.Save();
-                switch (value) {
-                    default:
-                        Screen.SetResolution(640, 480, false);
-                        break;
-                    case "2":
-                        Screen.SetResolution(1280, 960, false);
-                        break;
-                    case "fullscreen":
-                        var monitor = Screen.mainWindowDisplayInfo;
-                        var w = monitor.width;
-                        var h = monitor.height;
-                        Screen.SetResolution(w, h, true);
-                        break;
-                }
+                GameManager.SetResolution(value);
             };
         }
 

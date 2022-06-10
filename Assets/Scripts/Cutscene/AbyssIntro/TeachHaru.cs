@@ -36,14 +36,14 @@ namespace Cutscene.AbyssIntro {
             if (taught) return;
             var delay = TimeSpan.FromMilliseconds(1500);
             using var l = new PhysicsLock();
-            await UniTask.WaitUntil(() => !mike.isMoving);
+            await UniTask.WaitUntil(() => !mike.IsMoving);
             using var s = new SafeStatLock<float>(mike.Speed, 1.5f, v => mike.Speed = v);
             
-            for (int i = 0; i < 2; ++i) {
+            for (int i = 0; i < 4; ++i) {
                 await mike.MoveCharacter(Vector2.up);
             }
 
-            await UniTask.Delay(TimeSpan.FromMilliseconds(1000));
+            await UniTask.Delay(TimeSpan.FromMilliseconds(1500));
             foreach (var orientation in new List<Orientation> {Orientation.Right, Orientation.Down, Orientation.Left, Orientation.Up}) {
                 mike.Turn(orientation);
                 await UniTask.Delay(delay);

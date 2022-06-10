@@ -20,7 +20,7 @@ public class MovementController : MonoBehaviour
     private static readonly int Horizontal = Animator.StringToHash("Horizontal");
     private static readonly int Vertical = Animator.StringToHash("Vertical");
     private static readonly int Moving = Animator.StringToHash("Moving");
-    public bool isMoving => moving;
+    public bool IsMoving => moving;
     public float Speed {
         get => speed;
         set => speed = value;

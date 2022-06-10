@@ -22,27 +22,24 @@ public class GameManager : Singleton {
         findFilter.useLayerMask = true;
     }
 
+    public static void SetResolution(String resolutionString) {
+        var monitor = Screen.mainWindowDisplayInfo;
+
+        var (w, h, fs) = resolutionString switch {
+            "2" => (1280, 960, false),
+            "3" => (1920, 1440, false),
+            "fullscreen" => (monitor.width, monitor.height, true),
+            _ => (640, 480, false)
+        };
+        
+        Screen.SetResolution(w, h, fs);
+    }
+
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
     public static void InitializeGame() {
-        if (!PlayerPrefs.HasKey("Resolution")) {
-            PlayerPrefs.SetString("Resolution", "1");
-        }
-
-        switch (PlayerPrefs.GetString("Resolution")) {
-            default:
-                Screen.SetResolution(640, 480, false);
-                break;
-            case "2":
-                Screen.SetResolution(1280, 960, false);
-                break;
-            case "fullscreen":
-                var monitor = Screen.mainWindowDisplayInfo;
-                var w = monitor.width;
-                var h = monitor.height;
-                Screen.SetResolution(w, h, true);
-                break;
-        }
+        SetResolution(PlayerPrefs.GetString("Resolution", "2"));
+        
     }
 
     public static Vector2 PixelClamp(Vector2 vector) {

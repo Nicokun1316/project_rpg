@@ -22,9 +22,9 @@ namespace UI {
             } else if (direction == Vector2.left) {
                 choice.Previous();
             } else if (direction == Vector2.down) {
-                choice.currentSelectedMenuItem.GetComponent<Focusable>().MoveInput(Vector2.right);
+                choice.currentSelectedMenuItem.GetComponent<Focusable>()?.MoveInput(Vector2.right);
             } else if (direction == Vector2.up) {
-                choice.currentSelectedMenuItem.GetComponent<Focusable>().MoveInput(Vector2.left);
+                choice.currentSelectedMenuItem.GetComponent<Focusable>()?.MoveInput(Vector2.left);
             }
 
             return ConfirmResult.DoNothing;

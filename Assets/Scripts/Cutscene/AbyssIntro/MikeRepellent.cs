@@ -47,7 +47,7 @@ namespace Cutscene.AbyssIntro {
         private async UniTask ScareMichael() {
             using var l = new PhysicsLock();
             if (overcome) return;
-            await UniTask.WaitUntil(() => !mike.isMoving);
+            await UniTask.WaitUntil(() => !mike.IsMoving);
             Dictionary<String, String> options = await UIManager.INSTANCE.PerformDialogue(ChooseDialogue());
 
             if (mikeChara.inventory.items.Contains(courage)) {
