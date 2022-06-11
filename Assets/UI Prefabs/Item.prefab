@@ -102,7 +102,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: c745553822da627498034a43369cb805, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b01b30bba7e22e4ca72377f5c2e82cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  _item: {fileID: 0}
 --- !u!114 &2648036272660368418
 MonoBehaviour:
   m_ObjectHideFlags: 0

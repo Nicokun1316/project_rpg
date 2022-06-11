@@ -11,11 +11,11 @@ public class InputController : MovementController {
 
     private void Update() {
         if (!GameManager.IsPhysicsEnabled() || GameManager.INSTANCE.currentGameState != GameState.WORLD) {
-            Mv(Vector2.zero);
+            SetMovementVector(Vector2.zero);
         }
     }
 
-    public void Mv(Vector2 moveVec) {
+    public void SetMovementVector(Vector2 moveVec) {
         this.moveVec = moveVec;
     }
 

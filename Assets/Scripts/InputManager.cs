@@ -9,6 +9,7 @@ public class InputManager : Singleton {
 
     private InputController playerController;
     private Dictionary<String, InputHook> hooks;
+    private UIMoveInputMagician uiMoveMagician;
 
     public delegate bool InputHook(InputAction.CallbackContext context);
 
@@ -33,6 +34,23 @@ public class InputManager : Singleton {
         return false;
     }
 
+    public void Move(Vector2 vec) {
+        switch (GameManager.INSTANCE.currentGameState) {
+            case GameState.UI:
+                //if (context.performed) {
+                UIManager.INSTANCE.MoveUI(vec);
+                //}
+
+                break;
+            case GameState.WORLD:
+                playerController.SetMovementVector(vec);
+                break;
+            case GameState.COMBAT:
+                break;
+            
+        }
+    }
+
     private void Move(InputAction.CallbackContext context) {
         if (ProcessHooks(context)) return;
         
@@ -46,20 +64,8 @@ public class InputManager : Singleton {
             resultVector = new Vector2(0, mv.y > 0 ? 1 : -1);
         }
         
-        switch (GameManager.INSTANCE.currentGameState) {
-            case GameState.UI:
-                if (context.performed) {
-                    UIManager.INSTANCE.MoveUI(resultVector);
-                }
-
-                break;
-            case GameState.WORLD:
-                playerController.Mv(resultVector);
-                break;
-            case GameState.COMBAT:
-                break;
-            
-        }
+        uiMoveMagician.SetMovementVector(resultVector);
+        //Move(resultVector);
     }
 
     private void Confirm(InputAction.CallbackContext context) {
@@ -111,5 +117,6 @@ public class InputManager : Singleton {
         player = GameObject.FindWithTag("Player");
         playerController = player.GetComponent<InputController>();
         hooks = new();
+        uiMoveMagician = GetComponent<UIMoveInputMagician>();
     }
 }

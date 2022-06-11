@@ -35,7 +35,7 @@ namespace UI {
                             if (character == '>') isParsingTags = false;
                         } else {
                             if (!continueText) {
-                                yield return new WaitForSeconds(0.05f);
+                                yield return new WaitForSecondsRealtime(0.05f);
                             }
                         }
 

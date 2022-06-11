@@ -76,6 +76,7 @@ namespace UI {
         public void Interact() {
             switch (GameManager.INSTANCE.currentGameState) {
                 case GameState.WORLD: {
+                    if (!GameManager.IsPhysicsEnabled()) return;
                     var interactible = GameManager.INSTANCE.FindObjectInFrontOfPlayer(LayerMask.GetMask("Interactible"));
                     if (interactible != null) {
                         var focusable = interactible.GetComponent<Focusable>();

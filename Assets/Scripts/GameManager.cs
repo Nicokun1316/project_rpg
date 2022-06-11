@@ -65,6 +65,7 @@ public class GameManager : Singleton {
 
     public void TransitionGameState(GameState newState) {
         currentGameState = newState;
+        Time.timeScale = newState == GameState.UI ? 0 : 1;
     }
     
     public GameObject FindObjectInFrontOfPlayer(int mask) {
