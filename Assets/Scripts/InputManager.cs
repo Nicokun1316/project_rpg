@@ -11,6 +11,7 @@ public class InputManager : Singleton {
     private Dictionary<String, InputHook> hooks;
     private UIMoveInputMagician uiMoveMagician;
 
+    // this will be replaced eventually:tm: since its ugly and error prone
     public delegate bool InputHook(InputAction.CallbackContext context);
 
     public void RegisterInputHook(String action, InputHook hook) {
@@ -103,6 +104,12 @@ public class InputManager : Singleton {
                 break;
             case GameState.COMBAT: 
                 break;
+        }
+    }
+
+    public void OpenMenu(InputAction.CallbackContext context) {
+        if (GameManager.INSTANCE.currentGameState is GameState.WORLD or GameState.UI) {
+            UIManager.INSTANCE.OpenMenu();
         }
     }
 

@@ -11,13 +11,13 @@ namespace UI {
     public class UIManager : Singleton {
         //private Image menu;
         public static UIManager INSTANCE { get; private set; }
-        private StaticChoice choice;
+        private StaticChoice mainMenu;
         private Stack<Focusable> focusStack = new();
         private Object lastObservedState;
         [SerializeField] public UIMenuItem itemPrefab;
 
         protected override void Initialize() {
-            choice = FindObjectsOfType<StaticChoice>(true).First(it => it.gameObject.CompareTag("Menu"));
+            mainMenu = FindObjectsOfType<StaticChoice>(true).First(it => it.gameObject.CompareTag("Menu"));
         }
 
         protected override Singleton instance {
@@ -107,10 +107,7 @@ namespace UI {
                     break;
                 }
                 case GameState.WORLD: {
-                    GameManager.INSTANCE.TransitionGameState(GameState.UI);
-                    var focusable = choice.GetComponent<Focusable>();
-                    focusable.Focus();
-                    focusStack.Push(focusable);
+                    OpenMenu();
                     break;
                 }
                 case GameState.COMBAT:
@@ -146,6 +143,19 @@ namespace UI {
                     PerformActionResult(r);
                     break;
                 }
+            }
+        }
+
+        public void OpenMenu() {
+            if (mainMenu.gameObject.activeInHierarchy) {
+                while (focusStack.Count > 0) {
+                    PerformActionResult(ConfirmResult.Return);
+                }
+            } else {
+                GameManager.INSTANCE.TransitionGameState(GameState.UI);
+                var focusable = mainMenu.GetComponent<Focusable>();
+                focusable.Focus();
+                focusStack.Push(focusable);
             }
         }
     }
