@@ -34,7 +34,7 @@ namespace Cutscene.AbyssIntro {
         }
 
         private async UniTask LeaveBed() {
-            using var l = new PhysicsLock();
+            using var l = GameManager.AcquirePhysicsLock();
             await player.GetComponent<MovementController>().MoveCharacter(Vector2.down);
         }
     }

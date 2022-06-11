@@ -35,7 +35,7 @@ namespace Cutscene.AbyssIntro {
         private async UniTask Teach() {
             if (taught) return;
             var delay = TimeSpan.FromMilliseconds(1500);
-            using var l = new PhysicsLock();
+            using var l = GameManager.AcquirePhysicsLock();
             await UniTask.WaitUntil(() => !mike.IsMoving);
             using var s = new SafeStatLock<float>(mike.Speed, 1.5f, v => mike.Speed = v);
             

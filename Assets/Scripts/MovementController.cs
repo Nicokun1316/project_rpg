@@ -16,11 +16,11 @@ public class MovementController : MonoBehaviour
 
     [SerializeField] private float speed = 1;
     [SerializeField] private List<Tilemap> obstacleMaps;
-    private bool moving = false;
     private static readonly int Horizontal = Animator.StringToHash("Horizontal");
     private static readonly int Vertical = Animator.StringToHash("Vertical");
     private static readonly int Moving = Animator.StringToHash("Moving");
-    public bool IsMoving => moving;
+    public bool IsMoving { get; private set; } = false;
+
     public float Speed {
         get => speed;
         set => speed = value;
@@ -34,12 +34,12 @@ public class MovementController : MonoBehaviour
     }
 
     public async UniTask MoveCharacter(Vector2 offset, Orientation orientation) {
-        if (moving) return;
+        if (IsMoving) return;
         Turn(orientation);
         var d = AcquireDestination(offset);
         if (d == null) return;
         
-        moving = true;
+        IsMoving = true;
         var destination = d.Value;
         
         animator.SetBool(Moving, true);
@@ -60,7 +60,7 @@ public class MovementController : MonoBehaviour
         
         animator.SetBool(Moving, false);
 
-        moving = false;
+        IsMoving = false;
     }
 
     public async UniTask MoveCharacter(Vector2 offset) {

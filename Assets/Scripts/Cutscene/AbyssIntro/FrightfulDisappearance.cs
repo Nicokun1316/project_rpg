@@ -18,14 +18,14 @@ namespace Cutscene.AbyssIntro {
         
         void Update() {
             var campos = camera.WorldToViewportPoint(transform.position);
-            if (campos.x is > 0 and < 1 && campos.y is > 0 and < 1 && !disappearing && gameObject.activeSelf) {
+            if (!disappearing && campos.x is > 0 and < 1 && campos.y is > 0 and < 1 && gameObject.activeSelf) {
                 Disappear().Forget();
             }
         }
 
         private async UniTask Disappear() {
             disappearing = true;
-            await UniTask.Delay(TimeSpan.FromMilliseconds(300));
+            await UniTask.Delay(TimeSpan.FromMilliseconds(500));
             gameObject.SetActive(false);
         }
     }

@@ -8,11 +8,9 @@ namespace UI {
         public event SelectionChanged onSelectionChanged;
         public override void Freeze() {
             base.Freeze();
-            Debug.Log("Freezing radio group");
         }
 
         public override void Unfreeze() {
-            Debug.Log("Unfreezing radio group");
             base.Unfreeze();
         }
 

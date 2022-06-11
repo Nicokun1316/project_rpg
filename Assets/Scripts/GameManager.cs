@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cutscene;
 using UnityEngine;
 
 public class GameManager : Singleton {
@@ -10,7 +11,7 @@ public class GameManager : Singleton {
     private Rigidbody2D playerBody;
     private ContactFilter2D findFilter;
     private List<RaycastHit2D> raycastResults = new();
-    private bool physics;
+    private int physicsLocks;
     public GameState currentGameState { get; private set; }
 
     public static GameManager INSTANCE;
@@ -53,7 +54,7 @@ public class GameManager : Singleton {
         player = GameObject.FindWithTag("Player");
         playerController = player.GetComponent<InputController>();
         playerBody = player.GetComponent<Rigidbody2D>();
-        physics = true;
+        physicsLocks = 0;
     }
 
     protected override Singleton instance {
@@ -64,7 +65,6 @@ public class GameManager : Singleton {
 
     public void TransitionGameState(GameState newState) {
         currentGameState = newState;
-        SetPhysicsEnabled(newState == GameState.WORLD);
     }
     
     public GameObject FindObjectInFrontOfPlayer(int mask) {
@@ -82,12 +82,15 @@ public class GameManager : Singleton {
         return cr == 0 ? null : raycastResults.First().collider.gameObject;
     }
 
-    public static void SetPhysicsEnabled(bool enabled) {
+    /*public static void SetPhysicsEnabled(bool enabled) {
         INSTANCE.playerController.Mv(Vector2.zero);
         INSTANCE.physics = enabled;
+    }*/
+    public static PhysicsLock AcquirePhysicsLock() {
+        return new PhysicsLock(() => { ++INSTANCE.physicsLocks; }, () => { --INSTANCE.physicsLocks; });
     }
 
     public static bool IsPhysicsEnabled() {
-        return INSTANCE.physics;
+        return INSTANCE.physicsLocks == 0;
     }
 }

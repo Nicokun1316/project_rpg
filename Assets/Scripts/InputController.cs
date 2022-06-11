@@ -9,6 +9,12 @@ public class InputController : MovementController {
         KeepMoving().Forget();
     }
 
+    private void Update() {
+        if (!GameManager.IsPhysicsEnabled() || GameManager.INSTANCE.currentGameState != GameState.WORLD) {
+            Mv(Vector2.zero);
+        }
+    }
+
     public void Mv(Vector2 moveVec) {
         this.moveVec = moveVec;
     }
