@@ -1,4 +1,6 @@
-﻿namespace UI.Dialogue {
+﻿using System;
+
+namespace UI.Dialogue {
     public interface ForwardDialogue : Dialogue {
         public Dialogue dialogue { get; }
         void Dialogue.startDialogue() {
@@ -11,8 +13,12 @@
             dialogue.advance(option);
         }
 
-        void Dialogue.AddFinishedListener(OnDialogueFinished listener) {
+        void Dialogue.AddFinishedListener(Action listener) {
             dialogue.AddFinishedListener(listener);
+        }
+
+        void Dialogue.AddStartedListener(Action action) {
+            dialogue.AddStartedListener(action);
         }
     }
 }

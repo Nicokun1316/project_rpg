@@ -27,13 +27,10 @@ namespace UI {
             move.Invoke(vec);
             if (vec == Vector2.zero) return;
             await UniTask.Delay(initialThrottle, delayType: DelayType.Realtime, cancellationToken: token);
-            print("Past initial throttle");
             if (token.IsCancellationRequested) return;
-            print("Cancelled before initial throttle");
             while (!token.IsCancellationRequested) {
                 move.Invoke(vec);
                 await UniTask.Delay(repeatThrottle, delayType: DelayType.Realtime, cancellationToken: token);
-                print("Awaited repeat delay");
             }
         }
 

@@ -21,7 +21,8 @@ namespace UI {
             if (item != null && icon != null) {
                 icon.sprite = Sprite.Create(item.icon, new Rect(0, 0, item.icon.width, item.icon.height), Vector2.zero);
                 skillName.text = item.skillName;
-                description.text = $"{item.description[..36]}...";
+                description.text = $"{item.description/*[..36]*/}...";
+                //description.maxVisibleCharacters = 36;
             } 
         }
     }

@@ -16,6 +16,7 @@
     }
 
     public static implicit operator Observable<T>(T value) => new(value);
+    public static implicit operator T(Observable<T> value) => value.value;
 
     public event ValueChange onChange;
 

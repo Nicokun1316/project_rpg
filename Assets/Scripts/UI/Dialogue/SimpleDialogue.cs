@@ -6,7 +6,8 @@ namespace UI.Dialogue {
     public class SimpleDialogue : /*MonoBehaviour,*/ Dialogue {
         [SerializeField] private DialogueChunk text;
         private DialogueChunk? currentChunk = null;
-        private event Dialogue.OnDialogueFinished onFinished;
+        private event Action onFinished;
+        private event Action onStarted;
         public SimpleDialogue() {}
 
         public SimpleDialogue(DialogueChunk chunk) {
@@ -15,6 +16,7 @@ namespace UI.Dialogue {
 
         public void startDialogue() {
             currentChunk = text;
+            onStarted?.Invoke();
         }
 
         public DialogueChunk? current() {
@@ -28,8 +30,12 @@ namespace UI.Dialogue {
             currentChunk = null;
         }
 
-        public void AddFinishedListener(Dialogue.OnDialogueFinished listener) {
+        public void AddFinishedListener(Action listener) {
             onFinished += listener;
+        }
+
+        public void AddStartedListener(Action action) {
+            onStarted += action;
         }
     }
 }

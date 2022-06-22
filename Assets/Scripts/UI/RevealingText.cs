@@ -18,11 +18,14 @@ namespace UI {
 
         public IEnumerator RevealText() {
             revealed = false;
+            UIAudioManager.INSTANCE.Play();
             foreach (var character in completeText) {
                 switch (character) {
                     case '|':
                         continueText = false;
+                        UIAudioManager.INSTANCE.Stop();
                         yield return new WaitUntil(() => continueText);
+                        UIAudioManager.INSTANCE.Play();
                         continueText = false;
                         break;
                     case '<':
@@ -43,6 +46,7 @@ namespace UI {
                     }
                 }
             }
+            UIAudioManager.INSTANCE.Stop();
 
             revealed = true;
         }

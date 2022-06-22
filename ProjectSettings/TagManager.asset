@@ -9,6 +9,8 @@ TagManager:
   - Menu
   - ItemMenu
   - Background
+  - InteractibleTilemap
+  - ObstaclesBase
   layers:
   - Default
   - TransparentFX

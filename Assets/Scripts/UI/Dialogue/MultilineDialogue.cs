@@ -7,7 +7,8 @@ namespace UI.Dialogue {
     public class MultilineDialogue : /*MonoBehaviour,*/ Dialogue {
         [SerializeField] private List<DialogueChunk> dialogues;
         private int currentIndex = 0;
-        private event Dialogue.OnDialogueFinished onFinished;
+        private event Action onFinished;
+        private event Action onStarted;
 
         public MultilineDialogue() {
             dialogues = new List<DialogueChunk>();
@@ -22,6 +23,7 @@ namespace UI.Dialogue {
         }
         public void startDialogue() {
             currentIndex = 0;
+            onStarted?.Invoke();
         }
 
         public DialogueChunk? current() {
@@ -37,8 +39,12 @@ namespace UI.Dialogue {
             ++currentIndex;
         }
 
-        public void AddFinishedListener(Dialogue.OnDialogueFinished listener) {
+        public void AddFinishedListener(Action listener) {
             onFinished += listener;
+        }
+
+        public void AddStartedListener(Action action) {
+            onStarted += action;
         }
     }
 }

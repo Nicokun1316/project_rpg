@@ -20,6 +20,7 @@ namespace Cutscene.AbyssIntro {
         [SerializeField] private GameObject drunkEffect;
         [SerializeField] private UtilityItem courage;
         [SerializeField] private FrightfulDisappearance shadowMike;
+        [SerializeField] private AudioClip shadowClip;
 
         private void Awake() {
             var mikeObject = GameObject.FindWithTag("Player");
@@ -72,16 +73,22 @@ namespace Cutscene.AbyssIntro {
             var delay = TimeSpan.FromMilliseconds(1000);
             await mainCamera.Shake(0.5f, 1);
             await UniTask.Delay(delay);
-            mike.Turn(Orientation.Right);
+
+            foreach (var orientation in new List<Orientation> {Orientation.Right, Orientation.Down, Orientation.Left, Orientation.Down}) {
+                mike.Turn(orientation);
+                await UniTask.Delay(delay);
+            }
+            
+            /*mike.Turn(Orientation.Right);
             await UniTask.Delay(delay);
             mike.Turn(Orientation.Down);
             await UniTask.Delay(delay);
             mike.Turn(Orientation.Left);
             await UniTask.Delay(delay);
             mike.Turn(Orientation.Down);
-            await UniTask.Delay(delay);
+            await UniTask.Delay(delay);*/
             await UIManager.INSTANCE.PerformDialogue(new DialogueChunk("",
-                "You hear a loud bang coming from the south.        \nPerhaps its worth checking out?"));
+                "You hear a loud bang coming from the south.        \nPerhaps it's worth checking out?"));
         }
 
 
@@ -114,6 +121,10 @@ namespace Cutscene.AbyssIntro {
             md.Initialize(new List<DialogueChunk> {
                 new("",
                     $"Inconspicuously, a new object has appeared in the drawer.\n|You receive {courage.Rep()}.\n|Access your inventory through the {MenuEnum.Items.Rep()} menu.")
+            });
+
+            md.dialogue.AddStartedListener(() => {
+                AudioManager.INSTANCE.PlayMusic(shadowClip);
             });
 
             md.dialogue.AddFinishedListener(() => {

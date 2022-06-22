@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI.Dialogue {
@@ -6,11 +7,13 @@ namespace UI.Dialogue {
         [SerializeField] private List<TextSequence> dialogues;
         private int dialogueIndex = -1;
         private int textIndex = 0;
-        private event Dialogue.OnDialogueFinished onFinished;
+        private event Action onFinished;
+        private event Action onStarted;
         public void startDialogue() {
             if (dialogueIndex + 1 < dialogues.Count)
                 ++dialogueIndex;
             textIndex = 0;
+            onStarted?.Invoke();
         }
 
         public DialogueChunk? current() {
@@ -27,8 +30,12 @@ namespace UI.Dialogue {
             ++textIndex;
         }
 
-        public void AddFinishedListener(Dialogue.OnDialogueFinished listener) {
+        public void AddFinishedListener(Action listener) {
             onFinished += listener;
+        }
+
+        public void AddStartedListener(Action action) {
+            onStarted += action;
         }
     }
 }

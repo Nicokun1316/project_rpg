@@ -109,7 +109,7 @@ public class InputManager : Singleton {
 
     public void OpenMenu(InputAction.CallbackContext context) {
         if (GameManager.INSTANCE.currentGameState is GameState.WORLD or GameState.UI) {
-            UIManager.INSTANCE.OpenMenu();
+            UIManager.INSTANCE.ToggleMenu();
         }
     }
 

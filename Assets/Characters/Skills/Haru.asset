@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2001
   skillName: Haru
-  description: "Summons a tiny flame, dealing small <sprite=\"elements\" name=\"fire\"><color=\"red\">fire</color>\r
-    damage to a single target.\r\nCan be used to light up your way in the dark."
+  description: 'Deals small <sprite="elements" name="fire"><color="red">fire</color>
+    damage to a single target.
+
+    Can be used to light up your way in the darkness.'
   icon: {fileID: 2800000, guid: 447022ad31434c345bf72351591a847c, type: 3}
   costs:
   - value: 2

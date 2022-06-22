@@ -12,7 +12,8 @@ namespace UI {
         private List<UIMenuItem> children;
         private int pageLength => children.Count;
         [SerializeField] private C itemSource;
-        public UIMenuItem currentSelectedMenuItem => children[index % pageLength];
+        UIMenuItem MenuChoice.currentSelectedMenuItem => (items?.Count ?? 0) > 0 ? children[index % pageLength] : null;
+        private UIMenuItem csmi => (this as MenuChoice).currentSelectedMenuItem;
         public UIMenuItem[] menuItems => children.Take(_choices.Count).ToArray();
 
         public int index {
@@ -23,7 +24,7 @@ namespace UI {
                     foreach (var menuItem in children) {
                         menuItem.gameObject.SetActive(false);
                     }
-                    currentSelectedMenuItem.deselect();
+                    csmi?.deselect();
                     _index = MathUtils.mod(value, _choices.Count);
                     var startingIndex = _index / pageLength * pageLength;
                     var currentPageLength = Math.Min(_choices.Count - startingIndex, pageLength);
@@ -35,7 +36,7 @@ namespace UI {
                         children[i].GetComponent<GenericItemComponent<T>>().item = _choices[startingIndex + i];
                     }
 
-                    currentSelectedMenuItem.select();
+                    csmi?.select();
                 }
             }
         }
@@ -61,16 +62,16 @@ namespace UI {
         }
 
         public void StopAnimation() {
-            currentSelectedMenuItem.StopAnimation();
+            csmi?.StopAnimation();
         }
 
         public void ResumeAnimation() {
-            currentSelectedMenuItem.ResumeAnimation();
+            csmi?.ResumeAnimation();
         }
 
         private void OnEnable() {
             children = transform.GetComponentsInDirectChildren<UIMenuItem>();
-            currentSelectedMenuItem.select();
+            csmi?.select();
             foreach (var menuItem in children) {
                 menuItem.gameObject.SetActive(false);
             }

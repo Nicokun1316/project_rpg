@@ -42,7 +42,7 @@ public class HiddenArea : MonoBehaviour {
             elapsedTime = Math.Min(elapsedTime + Time.deltaTime, dur);
             color.a = Mathf.SmoothStep(initAlpha, 0, elapsedTime / dur);
             renderer.color = color;
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
 
         elapsedTime = duration;
@@ -57,7 +57,7 @@ public class HiddenArea : MonoBehaviour {
             elapsedTime = Math.Min(elapsedTime + Time.deltaTime, dur);
             color.a = Mathf.Lerp(initAlpha, 1, elapsedTime / dur);
             renderer.color = color;
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
 
         elapsedTime = duration;

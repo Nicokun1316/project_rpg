@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour
 {
     public Orientation orientation { private set; get; }
@@ -20,6 +21,7 @@ public class MovementController : MonoBehaviour
     private static readonly int Vertical = Animator.StringToHash("Vertical");
     private static readonly int Moving = Animator.StringToHash("Moving");
     public bool IsMoving { get; private set; } = false;
+    public Vector2 Position => body.position;
 
     public float Speed {
         get => speed;
@@ -42,7 +44,8 @@ public class MovementController : MonoBehaviour
         IsMoving = true;
         var destination = d.Value;
         
-        animator.SetBool(Moving, true);
+        if (animator != null)
+            animator.SetBool(Moving, true);
 
         while (virtualPosition != destination) {
             await UniTask.WaitForFixedUpdate();
@@ -58,7 +61,8 @@ public class MovementController : MonoBehaviour
             body.position = GameManager.PixelClamp(newPosition);
         }
         
-        animator.SetBool(Moving, false);
+        if (animator != null)
+            animator.SetBool(Moving, false);
 
         IsMoving = false;
     }
@@ -85,9 +89,9 @@ public class MovementController : MonoBehaviour
         if (animator != null) {
             animator.SetFloat(Horizontal, x);
             animator.SetFloat(Vertical, y);
+            animator.speed = speed / 4;
         }
 
-        animator.speed = speed / 4;
     }
 
     private Orientation OrientationFor(Vector2 moveVector) => moveVector switch {

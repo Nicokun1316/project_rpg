@@ -24,7 +24,7 @@ namespace UI {
             description.text = item.description;
             try {
                 var statString = item.EnumerateStats().Select(it =>
-                        $"{it.name}: {(it.value > 0 ? $"<color=green>+{it.value}</color>" : $"<color=red>{it.value}</color>")}")
+                        $"{it.name.ToString()}: {(it.value > 0 ? $"<color=green>+{it.value}</color>" : $"<color=red>{it.value}</color>")}")
                     .Aggregate((total, nextStat) => $"{total}\n{nextStat}");
                 stats.text = statString;
             } catch (InvalidOperationException) {

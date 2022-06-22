@@ -14,7 +14,7 @@ public class GameManager : Singleton {
     private int physicsLocks;
     public GameState currentGameState { get; private set; }
 
-    public static GameManager INSTANCE;
+    public static GameManager INSTANCE { get; private set; }
 
     public static readonly int PPU = 32;
     

@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UI.Dialogue;
 using UnityEngine;
+using Utils;
 using Object = System.Object;
 
 namespace UI {
@@ -50,6 +51,15 @@ namespace UI {
             return dict;
         }
 
+        public async UniTask<String> Ask(String question, List<String> options, String author = null) {
+            return (await PerformDialogue(new DialogueChunk(author, question, "question", options)))
+                .GetOrDefault("question", options.Last());
+        }
+
+        public async UniTask<bool> Ask(String question, String author = null) {
+            return await Ask(question, new List<string> {"Yes", "No"}, author) == "Yes";
+        }
+        
         public async UniTask<Dictionary<String, String>> PerformDialogue(Dialogue.Dialogue dialogue) {
             var result = await PerformDialogueUnsafe(dialogue);
             return result;
@@ -78,10 +88,15 @@ namespace UI {
                 case GameState.WORLD: {
                     if (!GameManager.IsPhysicsEnabled()) return;
                     var interactible = GameManager.INSTANCE.FindObjectInFrontOfPlayer(LayerMask.GetMask("Interactible"));
+                    print($"Found interactible {interactible?.name}");
                     if (interactible != null) {
                         var focusable = interactible.GetComponent<Focusable>();
                         if (focusable != null) {
+                            print("Focusable not null");
                             PerformInteraction(focusable);
+                        } else {
+                            print("Focusable null");
+                            interactible.GetComponent<InteractionTarget>()?.Interact();
                         }
                     }
 
@@ -107,7 +122,7 @@ namespace UI {
                     break;
                 }
                 case GameState.WORLD: {
-                    OpenMenu();
+                    ToggleMenu();
                     break;
                 }
                 case GameState.COMBAT:
@@ -146,7 +161,7 @@ namespace UI {
             }
         }
 
-        public void OpenMenu() {
+        public void ToggleMenu() {
             if (mainMenu.gameObject.activeInHierarchy) {
                 while (focusStack.Count > 0) {
                     PerformActionResult(ConfirmResult.Return);
