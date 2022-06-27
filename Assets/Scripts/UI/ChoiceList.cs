@@ -33,7 +33,7 @@ namespace UI {
                     }
                     
                     for (int i = 0; i < pageLength && startingIndex + i < _choices.Count; ++i) {
-                        children[i].GetComponent<GenericItemComponent<T>>().item = _choices[startingIndex + i];
+                        children[i].GetComponent<GenericItemComponent<T>>().Item = _choices[startingIndex + i];
                     }
 
                     csmi?.select();

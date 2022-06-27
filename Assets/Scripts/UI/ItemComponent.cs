@@ -19,10 +19,10 @@ namespace UI {
     
 
         protected override void InvalidateItem() {
-            if (item != null && item.icon != null && image != null) {
-                image.sprite = Sprite.Create(item.icon, new Rect(0, 0, item.icon.width, item.icon.height), Vector2.zero);
-                text.text = item.itemName;
-                money.text = $"${item.cost}";
+            if (Item != null && Item.icon != null && image != null) {
+                image.sprite = Sprite.Create(Item.icon, new Rect(0, 0, Item.icon.width, Item.icon.height), Vector2.zero);
+                text.text = Item.itemName;
+                money.text = $"${Item.cost}";
             }
         }
     }

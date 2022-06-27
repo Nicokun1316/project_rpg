@@ -11,7 +11,7 @@ namespace UI {
 
         Focusable RedirectingFocusable.target => GameObject.FindGameObjectWithTag("ItemMenu").transform.Find("ItemMenu").GetComponent<Focusable>();
         void RedirectingFocusable.InitializeTarget(Focusable tar) {
-            (tar as MonoBehaviour)?.GetComponent<ItemDescriptionComponent>().SetItem(item.item);
+            (tar as MonoBehaviour)?.GetComponent<ItemDescriptionComponent>().SetItem(item.Item);
         }
     }
 }

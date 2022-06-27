@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -6,7 +7,8 @@ public class InputController : MovementController {
     private Vector2 moveVec;
 
     private void Awake() {
-        KeepMoving().Forget();
+        this.GetCancellationTokenOnDestroy();
+        KeepMoving(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
     private void Update() {
@@ -19,9 +21,9 @@ public class InputController : MovementController {
         this.moveVec = moveVec;
     }
 
-    private async UniTask KeepMoving() {
+    private async UniTask KeepMoving(CancellationToken token = default) {
         while (true) {
-            await UniTask.WaitUntil(() => moveVec != Vector2.zero && GameManager.IsPhysicsEnabled());
+            await UniTask.WaitUntil(() => moveVec != Vector2.zero && GameManager.IsPhysicsEnabled(), cancellationToken: token);
             await MoveCharacter(moveVec);
         }
     }

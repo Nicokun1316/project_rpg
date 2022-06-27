@@ -31,7 +31,6 @@ namespace UI {
         }
 
         public virtual ConfirmResult Confirm() {
-            print($"csmi = {choice.currentSelectedMenuItem}; focus = {choice.currentSelectedMenuItem?.GetComponent<Focusable>()}");
             var focusable = choice.currentSelectedMenuItem?.GetComponent<Focusable>();
             return focusable == null ? ConfirmResult.DoNothing : ConfirmResult.ChangeFocus(focusable);
         }

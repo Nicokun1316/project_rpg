@@ -18,10 +18,10 @@ namespace UI {
         }
 
         protected override void InvalidateItem() {
-            if (item != null && icon != null) {
-                icon.sprite = Sprite.Create(item.icon, new Rect(0, 0, item.icon.width, item.icon.height), Vector2.zero);
-                skillName.text = item.skillName;
-                description.text = $"{item.description/*[..36]*/}...";
+            if (Item != null && icon != null) {
+                icon.sprite = Sprite.Create(Item.icon, new Rect(0, 0, Item.icon.width, Item.icon.height), Vector2.zero);
+                skillName.text = Item.skillName;
+                description.text = $"{Item.description/*[..36]*/}...";
                 //description.maxVisibleCharacters = 36;
             } 
         }

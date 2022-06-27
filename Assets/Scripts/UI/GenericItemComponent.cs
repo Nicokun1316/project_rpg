@@ -2,12 +2,12 @@
 
 namespace UI {
     public abstract class GenericItemComponent<T> : MonoBehaviour {
-        [SerializeField] private T _item;
+        [SerializeField] private T item;
 
-        public T item {
-            get => _item;
+        public T Item {
+            get => item;
             set {
-                _item = value;
+                item = value;
                 InvalidateItem();
             }
         }

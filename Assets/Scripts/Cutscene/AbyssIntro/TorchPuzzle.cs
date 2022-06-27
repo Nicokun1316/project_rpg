@@ -37,7 +37,6 @@ public class TorchPuzzle : MonoBehaviour {
                 for (var y = unlockPosition.y; y < unlockPosition.y + unlockSpan.y; ++y) {
                     for (var x = unlockPosition.x; x < unlockPosition.x + unlockSpan.x; ++x) {
                         var v = new Vector3Int(x, y);
-                        print($"Setting {v} to null");
                         map.SetTile(new Vector3Int(x, y), null);
                     }
                 }

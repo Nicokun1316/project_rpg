@@ -20,7 +20,7 @@ namespace UI {
         }
 
         public void SetItem(Item item) {
-            itemComponent.item = item;
+            itemComponent.Item = item;
             description.text = item.description;
             try {
                 var statString = item.EnumerateStats().Select(it =>

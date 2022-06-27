@@ -88,14 +88,11 @@ namespace UI {
                 case GameState.WORLD: {
                     if (!GameManager.IsPhysicsEnabled()) return;
                     var interactible = GameManager.INSTANCE.FindObjectInFrontOfPlayer(LayerMask.GetMask("Interactible"));
-                    print($"Found interactible {interactible?.name}");
                     if (interactible != null) {
                         var focusable = interactible.GetComponent<Focusable>();
                         if (focusable != null) {
-                            print("Focusable not null");
                             PerformInteraction(focusable);
                         } else {
-                            print("Focusable null");
                             interactible.GetComponent<InteractionTarget>()?.Interact();
                         }
                     }
