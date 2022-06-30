@@ -7,10 +7,9 @@ using UnityEngine.UI;
 namespace UI {
     public class Blinky : MonoBehaviour {
         private Image image;
-        //private IEnumerator runningBlink;
         private Color initialColor;
         private Animator animator;
-        private static readonly Color Transparent = new(1, 1, 1, 0);
+
         private void Awake() {
             image = GetComponent<Image>();
             animator = GetComponent<Animator>();
@@ -29,15 +28,6 @@ namespace UI {
             yield return new WaitForNextFrameUnit();
             animator.enabled = enabled;
         }
-
-        /*private IEnumerator Blink() {
-            while (true) {
-                //image.color = initialColor;
-                yield return new WaitForSeconds(0.5f);
-                //image.color = Transparent;
-                yield return new WaitForSeconds(0.5f);
-            }
-        }*/
 
         public void StopAnimation() {
             if (gameObject.activeInHierarchy) {

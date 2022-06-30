@@ -7,7 +7,6 @@ public class InputController : MovementController {
     private Vector2 moveVec;
 
     private void Awake() {
-        this.GetCancellationTokenOnDestroy();
         KeepMoving(this.GetCancellationTokenOnDestroy()).Forget();
     }
 

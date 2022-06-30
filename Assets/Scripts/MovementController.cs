@@ -7,9 +7,16 @@ using UnityEngine.Tilemaps;
 using Utils;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class MovementController : MonoBehaviour
-{
-    public Orientation orientation { private set; get; }
+public class MovementController : MonoBehaviour {
+    [field: SerializeField] public Orientation Orientation { private set; get; } = Orientation.Up;
+
+    public Vector2 Direction => Orientation switch {
+        Orientation.Up => Vector2.up,
+        Orientation.Down => Vector2.down,
+        Orientation.Left => Vector2.left,
+        Orientation.Right => Vector2.right,
+        _ => throw new ArgumentOutOfRangeException()
+    };
 
     private Rigidbody2D body;
     private Vector2 virtualPosition;
@@ -31,8 +38,8 @@ public class MovementController : MonoBehaviour
     void Start() {
         body = GetComponent<Rigidbody2D>();
         virtualPosition = body.position;
-        orientation = Orientation.Up;
         animator = GetComponent<Animator>();
+        UpdateAnimator();
     }
 
     public async UniTask MoveCharacter(Vector2 offset, Orientation orientation) {
@@ -72,12 +79,12 @@ public class MovementController : MonoBehaviour
     }
 
     public void Turn(Orientation orientation) {
-        this.orientation = orientation;
+        Orientation = orientation;
         UpdateAnimator();
     }
 
     private void UpdateAnimator() {
-        var moveVec = orientation switch {
+        var moveVec = Orientation switch {
             Orientation.Down => Vector2.down,
             Orientation.Up => Vector2.up,
             Orientation.Left => Vector2.left,
@@ -99,7 +106,7 @@ public class MovementController : MonoBehaviour
         (0, -1) => Orientation.Down,
         (1, 0) => Orientation.Right,
         (-1, 0) => Orientation.Left,
-        _ => orientation
+        _ => Orientation
     };
 
     private Vector2? AcquireDestination(Vector2 offset) {
@@ -107,7 +114,8 @@ public class MovementController : MonoBehaviour
 
         var destination = virtualPosition + offset;
         var tilePosition = Vector3Int.FloorToInt(destination);
-        var isObstructed = obstacleMaps.Any(m => m.HasTile(tilePosition));
+        var isObstructed = obstacleMaps.Any(m => m.HasTile(tilePosition)) ||
+                           GameManager.INSTANCE.FindObjectInFrontAt(LayerMask.GetMask("Interactible"), 1.0f) != null;
         return isObstructed ? null : destination;
     }
 }

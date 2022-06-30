@@ -10,7 +10,7 @@ namespace UI {
         private Blinky blinkyArrow;
         private TMP_Text tmpText;
 
-        public String text {
+        public String Text {
             get {
                 if (tmpText == null) {
                     tmpText = gameObject.FindRecursive("Text").GetComponent<TMP_Text>();
@@ -28,7 +28,7 @@ namespace UI {
             }
         }
 
-        public GameObject arrow {
+        public GameObject Arrow {
             get {
                 if (!hasArrow) return null;
                 if (arrowField == null) {
@@ -40,18 +40,18 @@ namespace UI {
         }
 
         public void select() {
-            arrow?.SetActive(true);
+            Arrow?.SetActive(true);
             GetComponent<Focusable>()?.Unfreeze();
         }
 
         public void deselect() {
-            arrow?.SetActive(false);
+            Arrow?.SetActive(false);
             GetComponent<Focusable>()?.Freeze();
         }
 
         // Start is called before the first frame update
         void Start() {
-            blinkyArrow = arrow?.GetComponent<Blinky>();
+            blinkyArrow = Arrow?.GetComponent<Blinky>();
         }
 
         public void StopAnimation() {

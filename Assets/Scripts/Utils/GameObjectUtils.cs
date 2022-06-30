@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using DevLocker.Utils;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Utils {
     public static class GameObjectUtils {
@@ -34,5 +37,12 @@ namespace Utils {
 
             return components;
         }
+
+        public static AsyncOperation Load(this SceneReference scene) {
+            return SceneManager.LoadSceneAsync(scene.ScenePath);
+        }
+
+        public static UnityEngine.Color WithAlpha(this UnityEngine.Color color, float alpha) =>
+            new(color.r, color.g, color.b, alpha);
     }
 }

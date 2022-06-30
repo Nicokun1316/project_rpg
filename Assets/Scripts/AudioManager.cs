@@ -6,10 +6,16 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utils;
 
+[RequireComponent(typeof(AudioSource))]
 public class AudioManager : Singleton {
     private AudioSource source;
     private readonly LockableBoolean processing = new();
-    protected override Singleton instance { get => INSTANCE; set => INSTANCE = (AudioManager) value; }
+
+    protected override Singleton instance {
+        get => _INSTANCE;
+        set => _INSTANCE = (AudioManager) value;
+    }
+
     protected override void Initialize() {
         source = GetComponent<AudioSource>();
     }
@@ -20,7 +26,10 @@ public class AudioManager : Singleton {
 
     public AudioClip CurrentClip => source.clip;
 
-    public static AudioManager INSTANCE { get; private set; }
+    private static AudioManager _INSTANCE;
+
+    public static AudioManager INSTANCE =>
+        _INSTANCE ??= new GameObject("AudioManager", typeof(AudioSource)).AddComponent<AudioManager>();
 
     public async UniTask StopPlaying(float quietDuration = 1.5f) {
         using var _ = await processing.AcquireLock();
@@ -43,7 +52,7 @@ public class AudioManager : Singleton {
             source.volume = Mathf.SmoothStep(0, 1, Math.Min(1, leftOver / t));
             leftOver += Time.unscaledDeltaTime;
         }
-        
+
     }
 
     private async UniTask ChangeSongs(AudioClip clip, float t = 1.5f) {

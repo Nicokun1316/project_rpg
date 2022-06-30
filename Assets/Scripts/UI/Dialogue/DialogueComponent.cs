@@ -54,7 +54,7 @@ namespace UI.Dialogue {
             if (!isChoosing || !textComponent.revealed) {
                 return AdvanceDialogue();
             } else {
-                var choice = choices.currentSelectedMenuItem.text;
+                var choice = choices.currentSelectedMenuItem.Text;
                 state.Add(currentChoiceTag, choice);
                 return AdvanceDialogue();
             }
@@ -113,7 +113,7 @@ namespace UI.Dialogue {
                     currentChoiceTag = cc.ChoiceTag;
                     foreach (var option in cc.Options) {
                         var item = Instantiate(UIManager.INSTANCE.itemPrefab, answerPanel.transform);
-                        item.text = option;
+                        item.Text = option;
                     }
 
                     choices.Reset();

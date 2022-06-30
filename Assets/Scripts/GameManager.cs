@@ -1,9 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cutscene;
+using Cysharp.Threading.Tasks;
+using FX;
+using Lore;
 using UnityEngine;
+using UnityEngine.UI;
+using Utils;
 
 public class GameManager : Singleton {
     private InputController playerController;
@@ -68,30 +72,38 @@ public class GameManager : Singleton {
         Time.timeScale = newState == GameState.UI ? 0 : 1;
     }
     
-    public GameObject FindObjectInFrontOfPlayer(int mask) {
+    public GameObject FindObjectInFrontOfPlayer(int mask, float distance = 0.6f) {
         raycastResults.Clear();
         findFilter.layerMask = mask;
-        var direction = playerController.orientation switch {
-            Orientation.Up => new Vector2(0, 1),
-            Orientation.Down => new Vector2(0, -1),
-            Orientation.Left => new Vector2(-1, 0),
-            Orientation.Right => new Vector2(1, 0),
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        var cr = Physics2D.Raycast(playerBody.position, direction, findFilter, raycastResults, 1.1f);
+        var direction = playerController.Direction;
+        var cr = Physics2D.Raycast(playerBody.position, direction, findFilter, raycastResults, distance);
 
         return cr == 0 ? null : raycastResults.First().collider.gameObject;
     }
 
-    /*public static void SetPhysicsEnabled(bool enabled) {
-        INSTANCE.playerController.Mv(Vector2.zero);
-        INSTANCE.physics = enabled;
-    }*/
+    public GameObject FindObjectInFrontAt(int mask, float distance = 0.6f) {
+        var direction = playerController.Direction;
+        var point = playerController.Position + direction * distance;
+        var obj = Physics2D.OverlapPoint(point, mask);
+        return obj == null ? null : obj.gameObject;
+    }
+
     public static PhysicsLock AcquirePhysicsLock() {
         return new PhysicsLock(() => { ++INSTANCE.physicsLocks; }, () => { --INSTANCE.physicsLocks; });
     }
 
     public static bool IsPhysicsEnabled() {
         return INSTANCE.physicsLocks == 0;
+    }
+    
+    public static async UniTask TransitionMap(Map map) {
+        var _ = AcquirePhysicsLock();
+        await UniTask.WaitWhile(() => INSTANCE.playerController.IsMoving);
+        var loadTask = map.Scene.Load();
+        loadTask.allowSceneActivation = false;
+        var oldImage = GameObject.Find("SceneFadout").GetComponent<RawImage>();
+        await Effect.FadeIn(0.5f, alpha => oldImage.color = oldImage.color.WithAlpha(alpha));
+        loadTask.allowSceneActivation = true;
+        await loadTask;
     }
 }
