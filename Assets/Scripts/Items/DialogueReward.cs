@@ -22,7 +22,7 @@ namespace Items {
         private void Start() {
             GetComponent<Dialogue>().AddFinishedListener(() => {
                 if (!granted) {
-                    inventory.items.Add(item);
+                    inventory.AddItem(item);
                     granted = true;
                 }
             });

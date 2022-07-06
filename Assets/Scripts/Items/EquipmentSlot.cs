@@ -1,5 +1,5 @@
 ﻿namespace Items {
     public enum EquipmentSlot {
-        Weapon, Armour, LeftTrinket, RightTrinket
+        Weapon, Armour, LeftTrinket, RightTrinket, None
     }
 }

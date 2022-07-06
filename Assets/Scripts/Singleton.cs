@@ -5,20 +5,20 @@ using UnityEngine.SceneManagement;
 
 public abstract class Singleton : MonoBehaviour {
     private void Awake() {
-        assignInstance();
+        AssignInstance();
     }
 
     private void OnEnable() {
-        assignInstance();
+        AssignInstance();
     }
 
-    private void onSceneLoaded(Scene scene, LoadSceneMode mode) {
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         Initialize();
     }
 
-    private void assignInstance() {
+    private void AssignInstance() {
         if (instance == null) {
-            SceneManager.sceneLoaded += onSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             instance = this;
             Initialize();
             DontDestroyOnLoad(instance); 

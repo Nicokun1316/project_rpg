@@ -51,7 +51,7 @@ namespace Cutscene.AbyssIntro {
             await UniTask.WaitUntil(() => !mike.IsMoving);
             Dictionary<String, String> options = await UIManager.INSTANCE.PerformDialogue(ChooseDialogue());
 
-            if (mikeChara.inventory.items.Contains(courage)) {
+            if (mikeChara.inventory.HasItem(courage)) {
                 if (options.GetOrDefault("mike_drink", "No") == "Yes") {
                     await DrinkCourage();
                 } else {
@@ -94,7 +94,7 @@ namespace Cutscene.AbyssIntro {
 
         private async UniTask DrinkCourage() {
             await mike.MoveCharacter(Vector2.up);
-            mikeChara.inventory.items.Remove(courage);
+            mikeChara.inventory.RemoveItem(courage);
             mikeChara.character.AddExperience(10);
             overcome = true;
             await UIManager.INSTANCE.PerformDialogue(alcoholWarnings);
@@ -107,7 +107,7 @@ namespace Cutscene.AbyssIntro {
                 new("", "..."),
                 new("", "Do you want to receive courage?", "mike_drink", new List<string> {"Yes", "No"})
             };
-            return (scared, mikeChara.inventory.items.Contains(courage)) switch {
+            return (scared, mikeChara.inventory.HasItem(courage)) switch {
                 (false, _) => new SimpleDialogue(new DialogueChunk("",
                     "...\n|You are too afraid to walk any further.")),
                 (_, true) => new MultilineDialogue(dialogues),
@@ -129,7 +129,7 @@ namespace Cutscene.AbyssIntro {
 
             md.dialogue.AddFinishedListener(() => {
                 shadowMike.Show();
-                mikeChara.inventory.items.Add(courage);
+                mikeChara.inventory.AddItem(courage);
                 Destroy(md);
                 drawer.AddComponent<MultilineDialogueComponent>().Initialize(new List<DialogueChunk> {
                     new("", "Nothing to see here anymore.")
