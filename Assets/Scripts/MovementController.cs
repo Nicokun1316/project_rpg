@@ -9,6 +9,7 @@ using Utils;
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour {
     [field: SerializeField] public Orientation Orientation { private set; get; } = Orientation.Up;
+    [SerializeField] private bool pixelClamp = false;
 
     public Vector2 Direction => Orientation switch {
         Orientation.Up => Vector2.up,
@@ -44,6 +45,7 @@ public class MovementController : MonoBehaviour {
 
     public async UniTask MoveCharacter(Vector2 offset, Orientation orientation) {
         if (IsMoving) return;
+        offset = FixDirection(offset);
         Turn(orientation);
         var d = AcquireDestination(offset);
         if (d == null) return;
@@ -65,13 +67,23 @@ public class MovementController : MonoBehaviour {
             var maxOffset = Vector2.ClampMagnitude(offset * delta, distance);
             var newPosition = virtualPosition + maxOffset;
             virtualPosition = newPosition;
-            body.position = GameManager.PixelClamp(newPosition);
+            body.position = pixelClamp ? GameManager.PixelClamp(newPosition) : newPosition; // GameManager.PixelClamp(newPosition);
         }
         
         if (animator != null)
             animator.SetBool(Moving, false);
 
         IsMoving = false;
+    }
+
+    private Vector2 FixDirection(Vector2 offset) {
+        if (offset == Vector2.zero) {
+            return offset;
+        } else if (Math.Abs(offset.x) > Math.Abs(offset.y)) {
+            return new Vector2(offset.x > 0 ? 1 : -1, 0);
+        } else {
+            return new Vector2(0, offset.y > 0 ? 1 : -1);
+        }
     }
 
     public async UniTask MoveCharacter(Vector2 offset) {

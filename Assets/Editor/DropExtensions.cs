@@ -11,6 +11,7 @@ namespace Editor {
         private struct DropData {
             public Sprite[] sprites;
             public Vector2 position;
+            public Item[] items;
         }
 
         static DropExtensions() {
@@ -42,25 +43,46 @@ namespace Editor {
             var objs = DragAndDrop.objectReferences;
             var hasTextures = objs.OfType<Texture2D>().Any();
             var hasSprites = objs.OfType<Sprite>().Any();
-            if (!hasTextures && !hasSprites) return false;
-            var menu = new GenericMenu();
-            object dropData;
-            if (hasSprites) {
-                dropData = new DropData {
-                    sprites = objs.OfType<Sprite>().ToArray(),
-                    position = position
-                };
-            } else {
-                dropData = new DropData {
-                    sprites = objs.OfType<Texture2D>().Select(TextureToSprite).ToArray(),
-                    position = position
-                };
-            }
+            var hasItems = objs.OfType<Item>().Any();
+            if (!hasTextures && !hasSprites) {
+                if (!hasItems) {
+                    return false;
+                }
 
-            menu.AddItem(new GUIContent("Dialogue"), false, AddInteractibles, dropData);
-            menu.AddItem(new GUIContent("Chest"), false, AddChests, dropData);
-            menu.ShowAsContext();
-            return true;
+                var guid = AssetDatabase.FindAssets("chest_1 t:sprite").First();
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+
+                var menu = new GenericMenu();
+                object dropData = new DropData {
+                    sprites = new []{sprite},
+                    position = position,
+                    items = objs.OfType<Item>().ToArray()
+                };
+                menu.AddItem(new GUIContent("Chest"), false, AddChests, dropData);
+                menu.ShowAsContext();
+                return true;
+            } else {
+                var menu = new GenericMenu();
+                object dropData;
+                if (hasSprites) {
+                    dropData = new DropData {
+                        sprites = objs.OfType<Sprite>().ToArray(),
+                        position = position
+                    };
+                } else {
+                    dropData = new DropData {
+                        sprites = objs.OfType<Texture2D>().Select(TextureToSprite).ToArray(),
+                        position = position
+                    };
+                }
+
+                menu.AddItem(new GUIContent("Dialogue"), false, AddInteractibles, dropData);
+                menu.AddItem(new GUIContent("Chest"), false, AddChests, dropData);
+                menu.AddItem(new GUIContent("Shopkeeper"), false, AddMerchant, dropData);
+                menu.ShowAsContext();
+                return true;
+            }
         }
 
         static DragAndDropVisualMode SceneHandler(object dropUpon, Vector3 worldPosition, Vector2 viewportPosition,
@@ -74,9 +96,13 @@ namespace Editor {
             } else {
                 var texture = DragAndDrop.objectReferences.OfType<Texture2D>().FirstOrDefault();
                 var sprite = DragAndDrop.objectReferences.OfType<Sprite>().FirstOrDefault();
-                if (texture == null && sprite != null) {
-                    texture = sprite.texture;
-                }
+                var item = DragAndDrop.objectReferences.OfType<Item>().FirstOrDefault();
+
+                texture = (texture, sprite, item) switch {
+                    (null, null, { } i) => i.icon,
+                    (null, { } s, _) => s.texture,
+                    var (t, _, _) => t
+                };
 
                 if (texture != null) {
                     drawingOutline = true;
@@ -104,8 +130,27 @@ namespace Editor {
                     var bagID = AssetDatabase.FindAssets("shared_bag t:InventoryList").First();
                     var bagPath = AssetDatabase.GUIDToAssetPath(bagID);
                     var bag = AssetDatabase.LoadAssetAtPath<InventoryList>(bagPath);
-                    DialogueReward.AddReward(go, bag);
+                    Item item = null;
+                    if (dropData.items is {Length: > 0}) {
+                        item = dropData.items.First();
+                    }
+                    DialogueReward.AddReward(go, bag, item);
                     go.AddComponent<ChestDialogue>();
+                }
+            }
+        }
+
+        static void AddMerchant(object data) {
+            if (data is DropData dropData) {
+                foreach (var sprite in dropData.sprites) {
+                    var go = new GameObject("Shopkeeper", typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(Shopkeeper));
+                    Undo.RegisterCreatedObjectUndo(go, "Created shopkeeper");
+                    var renderer = go.GetComponent<SpriteRenderer>();
+                    go.layer = LayerMask.NameToLayer("Interactible");
+                    renderer.sprite = sprite;
+                    var collider = go.GetComponent<BoxCollider2D>();
+                    collider.size = sprite.rect.size / sprite.pixelsPerUnit;
+                    go.transform.position = dropData.position;
                 }
             }
         }

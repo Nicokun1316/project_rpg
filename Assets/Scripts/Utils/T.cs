@@ -28,7 +28,7 @@ namespace Utils {
 
         public static String Rep(this Skill skill) => skill.skillName.ToUpper().Colorize(GColor.Skill);
         public static String Rep(this MenuEnum menu) => menu.toString().Colorize(GColor.MenuRef);
-        public static String Rep(this Item item) => item.itemName.ToUpper().Colorize(GColor.Item);
+        public static String Rep(this Item item) => item == null ? "xxx" : item.itemName.ToUpper().Colorize(GColor.Item);
 
     }
 
