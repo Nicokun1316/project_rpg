@@ -41,7 +41,7 @@ public class TriggerTheScarySpookyStuff : MonoBehaviour {
 
             if (i % 2 == 0 && i != 0) {
                 turnSeq.MoveNext();
-                await mike.MoveCharacter(Vector2.zero, turnSeq.Current);
+                mike.Turn(turnSeq.Current);
             }
 
             await UniTask.Delay(TimeSpan.FromSeconds(2));
@@ -54,7 +54,7 @@ public class TriggerTheScarySpookyStuff : MonoBehaviour {
             await shadowMike.MoveCharacter((mike.Position - shadowMike.Position).normalized);
             if (i == 4) {
                 print($"turning himst up at {i}");
-                await mike.MoveCharacter(Vector2.zero, Orientation.Up);
+                mike.Turn(Orientation.Up);
             }
         }
 
@@ -63,11 +63,11 @@ public class TriggerTheScarySpookyStuff : MonoBehaviour {
         await mike.MoveCharacter(Vector2.down, Orientation.Up);
 
         await UniTask.Delay(1000);
-        await shadowMike.MoveCharacter(Vector2.zero, Orientation.Right);
+        shadowMike.Turn(Orientation.Right);
         for (int i = 0; i < 6; ++i) {
             await astro.MoveCharacter(Vector2.left);
             if (i % 2 == 0) {
-                await mike.MoveCharacter(Vector2.zero, Orientation.Right);
+                mike.Turn(Orientation.Right);
             }
         }
 
@@ -77,7 +77,7 @@ public class TriggerTheScarySpookyStuff : MonoBehaviour {
         await lumin.Blink(6, 1, 10, 1, 2f);
         var stopAudioTask = AudioManager.INSTANCE.StopPlaying();
         var lightenUpTask = lumin.LightenUp(30, 1, 80, 1, 2f);
-        await UniTask.WhenAll(stopAudioTask, lightenUpTask);
+        await (stopAudioTask, lightenUpTask);
         SceneManager.LoadScene("Scenes/Credits");
     }
 }

@@ -29,11 +29,11 @@ namespace UI {
                         continueText = false;
                         break;
                     case '<':
-                        currentText.set(currentText.get() + character);
+                        currentText.Set(currentText.Get() + character);
                         isParsingTags = true;
                         break;
                     default: {
-                        currentText.set(currentText.get() + character);
+                        currentText.Set(currentText.Get() + character);
                         if (isParsingTags) {
                             if (character == '>') isParsingTags = false;
                         } else {
@@ -62,7 +62,7 @@ namespace UI {
 
         public void RevealAll() {
             revealed = true;
-            currentText.set(completeText);
+            currentText.Set(completeText);
         }
     }
 }

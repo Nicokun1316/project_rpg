@@ -6,12 +6,12 @@
     private T value;
     public delegate void ValueChange(T oldValue, T newValue);
 
-    public void set(T newValue) {
+    public void Set(T newValue) {
         onChange?.Invoke(value, newValue);
         value = newValue;
     }
 
-    public T get() {
+    public T Get() {
         return value;
     }
 

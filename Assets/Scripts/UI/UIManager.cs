@@ -31,14 +31,12 @@ namespace UI {
             PerformActionResult(result);
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         public void PerformInteraction(Focusable focusable) {
             GameManager.INSTANCE.TransitionGameState(GameState.UI);
             focusStack.Push(focusable);
             focusable.Focus();
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         public async UniTask<Dictionary<String, String>> PerformDialogueUnsafe(Dialogue.Dialogue dialogue) {
             var dc = DialogueComponent.Create(dialogue);
             var dict = await PerformInteractionAsync(dc) as Dictionary<String, String>;
@@ -61,6 +59,7 @@ namespace UI {
         }
         
         public async UniTask<Dictionary<String, String>> PerformDialogue(Dialogue.Dialogue dialogue) {
+            // ????? What's the point of this method...
             var result = await PerformDialogueUnsafe(dialogue);
             return result;
         }
@@ -79,7 +78,7 @@ namespace UI {
 
         public async UniTask<Object> PerformInteractionAsync(Focusable focusable) {
             PerformInteraction(focusable);
-            await UniTask.WaitUntil(() => GameManager.INSTANCE.currentGameState == GameState.WORLD);
+            await UniTask.WaitUntil(() => !focusStack.Contains(focusable));
             return lastObservedState;
         }
 
