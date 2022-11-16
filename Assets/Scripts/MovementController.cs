@@ -24,7 +24,7 @@ public class MovementController : MonoBehaviour {
     private Animator animator;
 
     [SerializeField] private float speed = 1;
-    [SerializeField] private List<Tilemap> obstacleMaps;
+    private List<Tilemap> obstacleMaps;
     private static readonly int Horizontal = Animator.StringToHash("Horizontal");
     private static readonly int Vertical = Animator.StringToHash("Vertical");
     private static readonly int Moving = Animator.StringToHash("Moving");
@@ -35,11 +35,15 @@ public class MovementController : MonoBehaviour {
         get => speed;
         set => speed = value;
     }
-    
+
     void Start() {
         body = GetComponent<Rigidbody2D>();
         virtualPosition = body.position;
         animator = GetComponent<Animator>();
+        obstacleMaps = GameObject.FindGameObjectsWithTag("ObstaclesBase")
+            .Select(g => g.GetComponent<Tilemap>())
+            .Where(t => t is not null)
+            .ToList();
         UpdateAnimator();
     }
 
@@ -58,7 +62,7 @@ public class MovementController : MonoBehaviour {
 
         while (virtualPosition != destination) {
             await UniTask.WaitForFixedUpdate();
-            if (GameManager.INSTANCE.currentGameState != GameState.WORLD) {
+            if (GameManager.INSTANCE.CurrentGameState != GameState.WORLD) {
                 continue;
             }
 

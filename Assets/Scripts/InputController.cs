@@ -11,7 +11,7 @@ public class InputController : MovementController {
     }
 
     private void Update() {
-        if (!GameManager.IsPhysicsEnabled() || GameManager.INSTANCE.currentGameState != GameState.WORLD) {
+        if (!GameManager.IsPhysicsEnabled() || GameManager.INSTANCE.CurrentGameState != GameState.WORLD) {
             SetMovementVector(Vector2.zero);
         }
     }
@@ -21,7 +21,7 @@ public class InputController : MovementController {
     }
 
     private async UniTask KeepMoving(CancellationToken token = default) {
-        while (true) {
+        while (!token.IsCancellationRequested) {
             await UniTask.WaitUntil(() => moveVec != Vector2.zero && GameManager.IsPhysicsEnabled(), cancellationToken: token);
             await MoveCharacter(moveVec);
         }

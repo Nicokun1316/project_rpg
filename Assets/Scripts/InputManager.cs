@@ -36,7 +36,7 @@ public class InputManager : Singleton {
     }
 
     public void Move(Vector2 vec) {
-        switch (GameManager.INSTANCE.currentGameState) {
+        switch (GameManager.INSTANCE.CurrentGameState) {
             case GameState.UI:
                 //if (context.performed) {
                 UIManager.INSTANCE.MoveUI(vec);
@@ -73,7 +73,7 @@ public class InputManager : Singleton {
         if (!context.performed || ProcessHooks(context)) {
             return;
         }
-        var currentState = GameManager.INSTANCE.currentGameState;
+        var currentState = GameManager.INSTANCE.CurrentGameState;
         switch (currentState) {
             case GameState.UI:
                 UIManager.INSTANCE.Interact();
@@ -95,7 +95,7 @@ public class InputManager : Singleton {
             return;
         }
 
-        switch (GameManager.INSTANCE.currentGameState) {
+        switch (GameManager.INSTANCE.CurrentGameState) {
             case GameState.UI:
                 UIManager.INSTANCE.Cancel();
                 break;
@@ -108,7 +108,7 @@ public class InputManager : Singleton {
     }
 
     public void OpenMenu(InputAction.CallbackContext context) {
-        if (GameManager.INSTANCE.currentGameState is GameState.WORLD or GameState.UI) {
+        if (GameManager.INSTANCE.CurrentGameState is GameState.WORLD or GameState.UI) {
             UIManager.INSTANCE.ToggleMenu();
         }
     }

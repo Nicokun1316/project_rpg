@@ -16,7 +16,7 @@ namespace UI {
 
         public override ConfirmResult MoveInput(Vector2 direction) {
             base.MoveInput(direction);
-            onSelectionChanged?.Invoke(choice.currentSelectedMenuItem);
+            onSelectionChanged?.Invoke(Choice.currentSelectedMenuItem);
             
             return ConfirmResult.DoNothing;
         }

@@ -144,6 +144,7 @@ namespace Editor {
             if (data is DropData dropData) {
                 foreach (var sprite in dropData.sprites) {
                     var go = new GameObject("Shopkeeper", typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(Shopkeeper));
+                    go.GetComponent<SpriteRenderer>().sortingLayerName = "Objects";
                     Undo.RegisterCreatedObjectUndo(go, "Created shopkeeper");
                     var renderer = go.GetComponent<SpriteRenderer>();
                     go.layer = LayerMask.NameToLayer("Interactible");

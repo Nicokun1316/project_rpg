@@ -20,7 +20,7 @@ TagManager:
   - UI
   - Interactible
   - HiddenArea
-  - 
+  - Background
   - 
   - 
   - 
@@ -48,12 +48,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 3252432829
+    locked: 0
+  - name: Objects
+    uniqueID: 2716690695
+    locked: 0
+  - name: Players
+    uniqueID: 3138379821
+    locked: 0
+  - name: Tooltips
+    uniqueID: 1847083215
+    locked: 1
   - name: PreUI
     uniqueID: 71931439
     locked: 0
   - name: UI
     uniqueID: 3504773961
-    locked: 0
+    locked: 1
   - name: PostUI
     uniqueID: 1504173225
     locked: 0

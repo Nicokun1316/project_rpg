@@ -16,28 +16,30 @@ public class GameManager : Singleton {
     private ContactFilter2D findFilter;
     private List<RaycastHit2D> raycastResults = new();
     private int physicsLocks;
-    public GameState currentGameState { get; private set; }
+    public GameState CurrentGameState { get; private set; }
 
     public static GameManager INSTANCE { get; private set; }
 
     public static readonly int PPU = 32;
     
     public GameManager() {
-        currentGameState = GameState.WORLD;
+        CurrentGameState = GameState.WORLD;
         findFilter.useLayerMask = true;
     }
 
     public static void SetResolution(String resolutionString) {
-        var monitor = Screen.mainWindowDisplayInfo;
+        if (Application.platform != RuntimePlatform.Android) {
+            var monitor = Screen.mainWindowDisplayInfo;
 
-        var (w, h, fs) = resolutionString switch {
-            "2" => (1280, 960, false),
-            "3" => (1920, 1440, false),
-            "fullscreen" => (monitor.width, monitor.height, true),
-            _ => (640, 480, false)
-        };
-        
-        Screen.SetResolution(w, h, fs);
+            var (w, h, fs) = resolutionString switch {
+                "2" => (1280, 960, false),
+                "3" => (1920, 1440, false),
+                "fullscreen" => (monitor.width, monitor.height, true),
+                _ => (640, 480, false)
+            };
+
+            Screen.SetResolution(w, h, fs);
+        }
     }
 
 
@@ -68,7 +70,7 @@ public class GameManager : Singleton {
 
 
     public void TransitionGameState(GameState newState) {
-        currentGameState = newState;
+        CurrentGameState = newState;
         Time.timeScale = newState == GameState.UI ? 0 : 1;
     }
     

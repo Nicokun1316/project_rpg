@@ -11,8 +11,8 @@ namespace Items {
     public class Shopkeeper : MonoBehaviour, InteractionTarget {
         [field: SerializeField] public float Rate { get; private set; } = 3;
         [SerializeField] private Warelist stockList;
-        [SerializeField] private String name;
-        [SerializeField] private List<String> openingDialogue = new List<string> {"I am a shopkeeper. I keep the shops."};
+        [SerializeField] private new String name;
+        [SerializeField] private List<String> openingDialogue = new() {"I am a shopkeeper. I keep the shops."};
         [SerializeField] private String purchaseDialogue = "1x $item for you!";
         [SerializeField] private String leaveDialogue = "Have a nice day!";
         [SerializeField] private String windowShopperDialogue = "";

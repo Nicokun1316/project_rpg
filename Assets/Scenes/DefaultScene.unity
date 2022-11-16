@@ -194,9 +194,9 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -5
+  m_SortingLayerID: -1578276601
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -549,10 +549,10 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+    x: 0.45301542
+    y: -0.10071943
+    width: 0.44880784
+    height: 0.49331966
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -660,7 +660,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000bd2fdcc10769eda12de00fbbcf40186e2f964904499be6d0a9dca759
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1035,9 +1035,9 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -10
+  m_SortingLayerID: -1042534467
+  m_SortingLayer: 1
+  m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1795,8 +1795,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1156587475
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e14393672f492d24c955a71b8ea59152, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1883,6 +1883,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d42a902ca0142b9a83b4287b5a9b6c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Orientation>k__BackingField: 0
+  pixelClamp: 0
   speed: 4
   obstacleMaps:
   - {fileID: 74085996}
@@ -2025,6 +2027,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 1747229712801759326, guid: 356ea260d22341f45b19b92276770386, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -790193335
+      objectReference: {fileID: 0}
     - target: {fileID: 1747229713808280504, guid: 356ea260d22341f45b19b92276770386, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UI.Dialogue;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 using Object = System.Object;
 
@@ -82,8 +83,31 @@ namespace UI {
             return lastObservedState;
         }
 
+        public async UniTask<HandlerT> PresentList<ItemT, HandlerT, ItemSourceT, ChoiceListT>(int itemsPerPage, Vector2Int itemSize, List<ItemT> items) 
+                where HandlerT : ListHandler<ItemT> 
+                where ItemSourceT : IEnumerable<ItemT>
+                where ChoiceListT : ChoiceList<ItemSourceT, ItemT> {
+            var go = new GameObject("Shop") {
+                transform = { parent = FindObjectOfType<Canvas>().transform }
+            };
+            var rect = go.AddComponent<RectTransform>();
+            rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, itemSize.x + 8);
+            rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, itemSize.y * itemsPerPage + 8);
+            var img = go.AddComponent<Image>();
+            var layout = go.AddComponent<VerticalLayoutGroup>();
+            layout.padding = new RectOffset(4, 4, 4, 4);
+            var handler = go.AddComponent<HandlerT>();
+            return handler;
+        }
+
+        public void PopFocus() {
+            var focusable = focusStack.Peek();
+            PerformActionResult(ConfirmResult.Return);
+            lastObservedState = focusable.State();
+        }
+
         public void Interact() {
-            switch (GameManager.INSTANCE.currentGameState) {
+            switch (GameManager.INSTANCE.CurrentGameState) {
                 case GameState.WORLD: {
                     if (!GameManager.IsPhysicsEnabled()) return;
                     var interactible = GameManager.INSTANCE.FindObjectInFrontOfPlayer(LayerMask.GetMask("Interactible"));
@@ -109,7 +133,7 @@ namespace UI {
         }
 
         public void Cancel() {
-            switch (GameManager.INSTANCE.currentGameState) {
+            switch (GameManager.INSTANCE.CurrentGameState) {
                 case GameState.UI: {
                     var focusable = focusStack.Peek();
                     var result = focusable.Cancel();

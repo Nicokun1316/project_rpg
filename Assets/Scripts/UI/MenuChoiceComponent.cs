@@ -4,13 +4,17 @@ using Utils;
 
 namespace UI {
     public class MenuChoiceComponent : MonoBehaviour, Focusable {
-        public MenuChoice choice { get; private set; }
+        public MenuChoice Choice { get; private set; }
         [SerializeField] private bool isHorizontal = true;
 
         private void OnEnable() {
-            choice = GetComponent<MenuChoice>();
+            Choice = GetComponent<MenuChoice>();
         }
 
+        public void Dismiss() {
+            UIManager.INSTANCE.PopFocus();
+        }
+        
         public virtual ConfirmResult MoveInput(Vector2 direction) {
             if (!isHorizontal) {
                 var (x, y) = direction;
@@ -18,20 +22,20 @@ namespace UI {
             }
 
             if (direction == Vector2.right) {
-                choice.Next();
+                Choice.Next();
             } else if (direction == Vector2.left) {
-                choice.Previous();
+                Choice.Previous();
             } else if (direction == Vector2.down) {
-                choice.currentSelectedMenuItem.GetComponent<Focusable>()?.MoveInput(Vector2.right);
+                Choice.currentSelectedMenuItem.GetComponent<Focusable>()?.MoveInput(Vector2.right);
             } else if (direction == Vector2.up) {
-                choice.currentSelectedMenuItem.GetComponent<Focusable>()?.MoveInput(Vector2.left);
+                Choice.currentSelectedMenuItem.GetComponent<Focusable>()?.MoveInput(Vector2.left);
             }
 
             return ConfirmResult.DoNothing;
         }
 
         public virtual ConfirmResult Confirm() {
-            var focusable = choice.currentSelectedMenuItem?.GetComponent<Focusable>();
+            var focusable = Choice.currentSelectedMenuItem?.GetComponent<Focusable>();
             return focusable == null ? ConfirmResult.DoNothing : ConfirmResult.ChangeFocus(focusable);
         }
 
@@ -41,20 +45,20 @@ namespace UI {
 
         public virtual ConfirmResult Focus() {
             gameObject.parent().SetActive(true);
-            choice.index = 0;
+            Choice.index = 0;
             return ConfirmResult.DoNothing;
         }
 
         public virtual void Unfocus() {
-            ((MonoBehaviour) choice).gameObject.parent().SetActive(false);
+            ((MonoBehaviour) Choice).gameObject.parent().SetActive(false);
         }
 
         public virtual void Freeze() {
-            choice?.StopAnimation();
+            Choice?.StopAnimation();
         }
 
         public virtual void Unfreeze() {
-            choice?.ResumeAnimation();
+            Choice?.ResumeAnimation();
         }
     }
 }

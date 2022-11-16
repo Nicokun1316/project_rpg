@@ -57,8 +57,8 @@ public class LightableLantern : MonoBehaviour, InteractionTarget {
 
     // Start is called before the first frame update
     void Start() {
-        interactibles = GameObject.FindWithTag("InteractibleTilemap").GetComponent<Tilemap>();
         scope = GetComponentInParent<TileHotSwapScope>();
+        interactibles = scope.Interactibles;
         activateSkill = scope.ActivateSkill;
         lightDialogue =
             new MultilineDialogue(new List<DialogueChunk> {

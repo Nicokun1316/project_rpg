@@ -9,6 +9,7 @@ public class TileHotSwapScope : MonoBehaviour {
     [SerializeField] private List<TileBase> baseTiles;
     [SerializeField] private List<TileBase> swapTiles;
     [SerializeField] private Skill activateSkill;
+    [field: SerializeField] public Tilemap Interactibles { get; private set; }
     public ReadOnlyCollection<TileBase> BaseTiles => baseTiles.AsReadOnly();
     public ReadOnlyCollection<TileBase> SwapTiles => swapTiles.AsReadOnly();
     public Skill ActivateSkill => activateSkill;
