@@ -79,14 +79,6 @@ namespace Cutscene.AbyssIntro {
                 await UniTask.Delay(delay);
             }
             
-            /*mike.Turn(Orientation.Right);
-            await UniTask.Delay(delay);
-            mike.Turn(Orientation.Down);
-            await UniTask.Delay(delay);
-            mike.Turn(Orientation.Left);
-            await UniTask.Delay(delay);
-            mike.Turn(Orientation.Down);
-            await UniTask.Delay(delay);*/
             await UIManager.INSTANCE.PerformDialogue(new DialogueChunk("",
                 "You hear a loud bang coming from the south.        \nPerhaps it's worth checking out?"));
         }

@@ -16,7 +16,7 @@ namespace Cutscene.AbyssIntro {
             player.GetComponent<SpriteRenderer>().enabled = false;
             player.GetComponent<Light2D>().enabled = false;
             var im = InputManager.INSTANCE;
-            im.RegisterInputHook("Move", _ => {
+            im.RegisterInputHook("Move", () => {
                 player.GetComponent<SpriteRenderer>().enabled = true;
                 im.UnregisterInputHook("Confirm");
                 im.UnregisterInputHook("Cancel");
@@ -29,8 +29,8 @@ namespace Cutscene.AbyssIntro {
 
                 return true;
             });
-            im.RegisterInputHook("Confirm", _ => false);
-            im.RegisterInputHook("Cancel", _ => false);
+            im.RegisterInputHook("Confirm", () => false);
+            im.RegisterInputHook("Cancel", () => false);
         }
 
         private async UniTask LeaveBed() {

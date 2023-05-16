@@ -12,7 +12,7 @@ public class InputManager : Singleton {
     private UIMoveInputMagician uiMoveMagician;
 
     // this will be replaced eventually:tm: since its ugly and error prone
-    public delegate bool InputHook(InputAction.CallbackContext context);
+    public delegate bool InputHook();
 
     public void RegisterInputHook(String action, InputHook hook) {
         hooks.Add(action, hook);
@@ -22,11 +22,11 @@ public class InputManager : Singleton {
         hooks.Remove(action);
     }
 
-    private bool ProcessHooks(InputAction.CallbackContext context) {
-        if (hooks.ContainsKey(context.action.name)) {
-            var delete = hooks[context.action.name](context);
+    private bool ProcessHooks(String name) {
+        if (hooks.ContainsKey(name)) {
+            var delete = hooks[name]();
             if (delete) {
-                UnregisterInputHook(context.action.name);
+                UnregisterInputHook(name);
             }
 
             return true;
@@ -53,9 +53,14 @@ public class InputManager : Singleton {
     }
 
     private void Move(InputAction.CallbackContext context) {
-        if (ProcessHooks(context)) return;
+        SendMovementInput(context.ReadValue<Vector2>(), context.action.name);
+        //Move(resultVector);
+    }
+
+    public void SendMovementInput(Vector2 v, String action) {
+        if (ProcessHooks(action)) return;
         
-        var mv = context.ReadValue<Vector2>();
+        var mv = v;
         Vector2 resultVector;
         if (mv == Vector2.zero) {
             resultVector = mv;
@@ -66,11 +71,11 @@ public class InputManager : Singleton {
         }
         
         uiMoveMagician.SetMovementVector(resultVector);
-        //Move(resultVector);
+        
     }
 
     private void Confirm(InputAction.CallbackContext context) {
-        if (!context.performed || ProcessHooks(context)) {
+        if (!context.performed || ProcessHooks(context.action.name)) {
             return;
         }
         var currentState = GameManager.INSTANCE.CurrentGameState;
@@ -91,7 +96,7 @@ public class InputManager : Singleton {
             return;
         }
 
-        if (ProcessHooks(context)) {
+        if (ProcessHooks(context.action.name)) {
             return;
         }
 
